@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Operações Financeiras · banco BV · Simon Benlulu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#F8F6F2;--bg-1:#F0EDE7;--card:#FFFFFF;
+      --t1:#0E0D0B;--t2:#494743;--t3:#9A9790;
+      --red:#6D1717;--red-dim:rgba(109,23,23,.07);--red-b:rgba(109,23,23,.2);
+      --green:#15803D;--green-dim:rgba(21,128,61,.07);--green-b:rgba(21,128,61,.2);
+      --amber:#b45309;--amber-dim:rgba(180,83,9,.07);--amber-b:rgba(180,83,9,.2);
+      --border:rgba(14,13,11,.09);
+      --sh:0 1px 3px rgba(0,0,0,.05);--sh-md:0 4px 16px rgba(0,0,0,.08);
+      --fd:'DM Serif Display',Georgia,serif;--fb:'Inter',system-ui,sans-serif;
+      --ease:cubic-bezier(.16,1,.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--t1);font-family:var(--fb);line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    .wrap{width:100%;max-width:1060px;margin:0 auto;padding:0 2rem}
+    .divider{height:1px;background:var(--border)}
+
+    /* NAV */
+    #nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:background .3s,border-color .3s,backdrop-filter .3s}
+    #nav.stuck{background:rgba(248,246,242,.9);backdrop-filter:blur(16px);border-color:var(--border)}
+    .nav-logo{font-family:var(--fd);font-size:.9375rem;color:var(--t1)}
+    .nav-back{display:flex;align-items:center;gap:.375rem;font-size:.8125rem;font-weight:500;color:var(--t2);transition:color .2s}
+    .nav-back:hover{color:var(--t1)}
+
+    /* HERO */
+    .case-hero{padding:7.5rem 0 4rem;border-bottom:1px solid var(--border)}
+    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem}
+    .tag{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border-radius:4px}
+    .tag-r{color:var(--red);background:var(--red-dim)}
+    .tag-m{color:var(--t3);background:rgba(14,13,11,.05)}
+    .case-title{font-family:var(--fd);font-size:clamp(2.25rem,5.5vw,4rem);line-height:1.05;letter-spacing:-.03em;color:var(--t1);margin-bottom:.375rem}
+    .case-subtitle{font-size:1.125rem;color:var(--t2);margin-bottom:2rem;font-weight:300}
+    .cover-wrap{margin:0 auto 3rem;max-width:520px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.08);border:1px solid var(--border)}
+    .cover-wrap img{width:100%;display:block;height:auto}
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+    @media(max-width:600px){.metrics{grid-template-columns:1fr}}
+    .metric{background:var(--bg);padding:2rem 1.75rem;display:flex;flex-direction:column;gap:.375rem}
+    .metric-val{font-family:var(--fd);font-size:clamp(2rem,4vw,2.75rem);line-height:1;letter-spacing:-.03em;color:var(--red)}
+    .metric-lbl{font-size:.8125rem;color:var(--t2);line-height:1.5}
+
+    /* SECTIONS */
+    .section{padding:4rem 0}
+    .sec-label{font-size:.575rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:2rem;display:flex;align-items:center;gap:.5rem}
+    .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+    .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border)}
+    @media(max-width:720px){.overview-grid{grid-template-columns:1fr}}
+    .overview-col{background:var(--bg);padding:2rem 1.75rem}
+    .ov-label{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.875rem}
+    .ov-title{font-family:var(--fd);font-size:1.125rem;color:var(--t1);margin-bottom:.625rem;letter-spacing:-.01em}
+    .ov-text{font-size:.875rem;color:var(--t2);line-height:1.75}
+    .ov-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+    .ov-list li{display:flex;align-items:flex-start;gap:.5rem;font-size:.875rem;color:var(--t2);line-height:1.55}
+    .ov-list li::before{content:'→';color:var(--red);flex-shrink:0;font-size:.8rem;margin-top:.05rem}
+
+    /* TEAM */
+    .team-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:0;background:var(--border)}
+    .team-cell{background:var(--bg-1);padding:1.5rem 1.75rem}
+    .tc-label{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.5rem}
+    .tc-val{font-size:.875rem;font-weight:500;color:var(--t1);line-height:1.5}
+    .tc-val-sm{font-size:.8rem;color:var(--t2);line-height:1.6}
+
+    /* PROCESS */
+    .phases{display:flex;flex-direction:column}
+    .phase{border:1px solid var(--border);border-bottom:none}
+    .phase:last-child{border-bottom:1px solid var(--border)}
+    .phase-header{display:flex;align-items:center;gap:1.25rem;padding:1.5rem 1.75rem;background:var(--bg)}
+    .phase-num{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+    .phase-name{font-family:var(--fd);font-size:1.125rem;color:var(--t1);letter-spacing:-.01em}
+    .phase-body{padding:0 1.75rem 1.75rem}
+    .phase-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+    @media(max-width:560px){.phase-grid{grid-template-columns:1fr}}
+    .phase-item{display:flex;flex-direction:column;gap:.2rem;padding:.75rem 1rem;background:var(--bg-1);border-radius:6px}
+    .pi-type{font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+    .pi-desc{font-size:.8125rem;color:var(--t2);line-height:1.45}
+
+    /* ═══════ OPTION A ARTIFACTS ═══════ */
+    .feature{padding:3.5rem 0;border-bottom:1px solid var(--border)}
+    .feature:first-child{padding-top:0}
+    .feature:last-child{border-bottom:none}
+    .feature-top{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+    .feature-num{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+    .feature-name{font-family:var(--fd);font-size:1.375rem;color:var(--t1);letter-spacing:-.015em}
+    .feature-desc{font-size:.9375rem;color:var(--t2);line-height:1.75;margin-bottom:1.5rem;max-width:640px}
+
+    /* Pain points grid */
+    .pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin:1rem 0}
+    @media(max-width:580px){.pain-grid{grid-template-columns:1fr}}
+    .pain-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;border-left:3px solid var(--amber)}
+    .pain-icon{font-size:1.375rem;margin-bottom:.5rem}
+    .pain-title{font-size:.875rem;font-weight:600;color:var(--t1);margin-bottom:.375rem}
+    .pain-desc{font-size:.8rem;color:var(--t2);line-height:1.55}
+
+    /* Discovery flow — 4 cols */
+    .disc-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:1rem 0}
+    @media(max-width:720px){.disc-flow{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:480px){.disc-flow{grid-template-columns:1fr}}
+    .df-step{background:var(--card);padding:1.375rem 1.125rem}
+    .df-phase{font-size:.5rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.35rem}
+    .df-name{font-family:var(--fd);font-size:.9375rem;color:var(--t1);margin-bottom:.625rem;letter-spacing:-.01em}
+    .df-acts{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+    .df-act{font-size:.75rem;color:var(--t2);display:flex;align-items:flex-start;gap:.3rem;line-height:1.4}
+    .df-act::before{content:'·';color:var(--red);flex-shrink:0}
+
+    /* Solution comparison table */
+    .sol-table{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1rem 0}
+    .sol-head{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;background:var(--t1);gap:0}
+    .sol-head-cell{padding:.75rem 1rem;font-size:.625rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);border-right:1px solid rgba(255,255,255,.1)}
+    .sol-head-cell:last-child{border-right:none}
+    .sol-row{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;border-bottom:1px solid var(--border)}
+    .sol-row:last-child{border-bottom:none}
+    .sol-row:hover{background:rgba(109,23,23,.02)}
+    .sol-cell{padding:1rem;font-size:.8rem;color:var(--t2);border-right:1px solid var(--border);line-height:1.5;display:flex;align-items:flex-start;gap:.375rem}
+    .sol-cell:last-child{border-right:none}
+    .sol-name{font-weight:600;color:var(--t1);font-size:.8375rem}
+    .score{display:inline-flex;align-items:center;gap:.25rem;font-size:.65rem;font-weight:700;padding:.18rem .45rem;border-radius:4px;white-space:nowrap}
+    .score-h{color:var(--green);background:var(--green-dim);border:1px solid var(--green-b)}
+    .score-m{color:var(--amber);background:var(--amber-dim);border:1px solid var(--amber-b)}
+    @media(max-width:680px){
+      .sol-head,.sol-row{grid-template-columns:1fr}
+      .sol-head-cell,.sol-cell{border-right:none;border-bottom:1px solid var(--border)}
+      .sol-head-cell:last-child,.sol-cell:last-child{border-bottom:none}
+    }
+
+    /* Before/After wireframe */
+    .ba{display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:center;margin:1rem 0}
+    @media(max-width:600px){.ba{grid-template-columns:1fr;gap:.75rem}}
+    .ba-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem}
+    .ba-hdr{font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.875rem}
+    .ba-hdr.before{color:var(--t3)}.ba-hdr.after{color:var(--green)}
+    .wf-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+    .wf-row:last-child{margin-bottom:0}
+    .wf-label{font-size:.7rem;color:var(--t3);white-space:nowrap;min-width:70px}
+    .wf-bar{height:10px;border-radius:100px;background:var(--bg-1);flex:1}
+    .wf-badge{font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .45rem;border-radius:4px;white-space:nowrap;flex-shrink:0}
+    .wf-badge.bad{color:var(--amber);background:var(--amber-dim);border:1px solid var(--amber-b)}
+    .wf-badge.ok{color:var(--green);background:var(--green-dim);border:1px solid var(--green-b)}
+    .ba-arr{display:flex;flex-direction:column;align-items:center;gap:.25rem}
+    .ba-arr-ico{font-size:1.5rem;color:var(--red)}
+    .ba-arr-lbl{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-align:center}
+
+    /* Result cards */
+    .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0}
+    @media(max-width:600px){.result-grid{grid-template-columns:1fr}}
+    .res-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.25rem}
+    .res-icon{font-size:1.5rem;margin-bottom:.625rem}
+    .res-title{font-family:var(--fd);font-size:1.125rem;color:var(--t1);margin-bottom:.375rem;letter-spacing:-.01em}
+    .res-desc{font-size:.8rem;color:var(--t2);line-height:1.55}
+
+    /* Learnings */
+    .learn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin:1rem 0}
+    @media(max-width:580px){.learn-grid{grid-template-columns:1fr}}
+    .learn-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1rem 1.125rem;display:flex;gap:.75rem;align-items:flex-start}
+    .learn-num{font-size:.65rem;font-weight:700;letter-spacing:.08em;color:var(--red);background:var(--red-dim);border:1px solid var(--red-b);border-radius:4px;padding:.15rem .45rem;flex-shrink:0;line-height:1.5;margin-top:.05rem}
+    .learn-text{font-size:.875rem;color:var(--t2);line-height:1.5}
+    .learn-text strong{color:var(--t1);font-weight:500}
+
+    /* Insight box */
+    .insight-box{background:var(--red-dim);border-left:3px solid var(--red);padding:1.25rem 1.5rem;border-radius:0 8px 8px 0;margin:1.5rem 0}
+    .insight-lbl{font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.4rem}
+    .insight-text{font-size:.9375rem;color:var(--t2);line-height:1.75}
+    .insight-text strong{color:var(--t1);font-weight:500}
+
+    /* Users pill row */
+    .users-row{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+    .user-pill{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:.35rem .875rem;font-size:.8rem;font-weight:500;color:var(--t2)}
+
+    /* Disclaimer */
+    .disclaimer{background:var(--bg-1);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin:2rem 0;display:flex;gap:.875rem}
+    .disclaimer-icon{font-size:1rem;flex-shrink:0;color:var(--t3);margin-top:.05rem}
+    .disclaimer-text{font-size:.8rem;color:var(--t3);line-height:1.65}
+
+    /* Closing */
+    .closing{padding:5rem 0;text-align:center;border-top:1px solid var(--border)}
+    .closing-h{font-family:var(--fd);font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--t1);margin-bottom:1rem;letter-spacing:-.02em}
+    .closing-sub{font-size:1rem;color:var(--t2);margin-bottom:2.5rem}
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.4rem;border-radius:7px;font-size:.875rem;font-weight:600;border:none;cursor:pointer;transition:transform .18s var(--ease),box-shadow .2s,background .2s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-r{background:var(--red);color:#fff}
+    .btn-r:hover{background:#7E1C1C;box-shadow:0 8px 24px rgba(109,23,23,.2)}
+    .btn-g{background:transparent;color:var(--t2);border:1px solid var(--border)}
+    .btn-g:hover{border-color:rgba(14,13,11,.22);color:var(--t1)}
+    .case-nav-row{display:flex;justify-content:space-between;align-items:center;padding:2rem 0;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border)}
+    .case-nav-row a{display:flex;align-items:center;gap:.4rem;font-size:.875rem;font-weight:500;color:var(--t2);transition:color .2s}
+    .case-nav-row a:hover{color:var(--t1)}
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .fl{font-size:.8rem;color:var(--t3)}
+    .fr{display:flex;gap:1.5rem}
+    .fr a{font-size:.8rem;color:var(--t3);transition:color .2s}
+    .fr a:hover{color:var(--t1)}
+    .anim{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+    .anim.in{opacity:1;transform:none}
+    :focus-visible{outline:2px solid var(--red);outline-offset:3px}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="./index.html" class="nav-logo">Simon Benlulu</a>
+  <a href="./index.html#cases" class="nav-back">← Todos os cases</a>
+</nav>
+
+<!-- HERO -->
+<section class="case-hero">
+  <div class="wrap">
+    <div class="tag-row anim">
+      <span class="tag tag-r">banco BV</span>
+      <span class="tag tag-m">Product Discovery</span>
+      <span class="tag tag-m">UX Research</span>
+      <span class="tag tag-m">Dashboard Strategy</span>
+      <span class="tag tag-m">2024–2026</span>
+    </div>
+    <h1 class="case-title anim">Modernização do Dashboard de<br>Operações Financeiras</h1>
+    <p class="case-subtitle anim">banco BV — Reestruturação da Plataforma de Antecipações de Recebíveis</p>
+
+    <div class="cover-wrap anim">
+      <img src="./assets/images/bv/cover-modernizacao-dash.png" alt="Dashboard de Operações Financeiras — banco BV" loading="eager">
+    </div>
+
+    <div class="disclaimer anim">
+      <span class="disclaimer-icon">🔒</span>
+      <p class="disclaimer-text"><strong style="color:var(--t2);font-weight:600">Confidencialidade:</strong> Por motivos de compliance, este estudo não exibe telas, dados ou fluxos reais da plataforma. As representações visuais são conceituais e abstratas — criadas para demonstração do processo de design. Nenhuma informação interna, funcionalidade real ou dado sigiloso do banco BV é exibido.</p>
+    </div>
+
+    <div class="metrics anim">
+      <div class="metric">
+        <div class="metric-val">6 times</div>
+        <div class="metric-lbl">Equipes internas usando a plataforma diariamente — Mesa, Tesouraria, Crédito, Operações, Desembolso e Afiliação</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">↓ Carga</div>
+        <div class="metric-lbl">Redução da carga cognitiva e do número de passos para realizar operações críticas na plataforma</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">↑ Decisão</div>
+        <div class="metric-lbl">Tomada de decisão mais rápida e assertiva com visão hierárquica e orientada à ação</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW — STAR: Situação + Tarefa + Resultado -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Project Overview</div>
+    <div class="overview-grid anim">
+      <div class="overview-col">
+        <div class="ov-label">Situação (S)</div>
+        <div class="ov-title">Uma plataforma crescendo mais rápido do que sua interface conseguia acompanhar</div>
+        <p class="ov-text">A plataforma de Antecipações de Recebíveis é usada diariamente por 6 áreas do banco e mais de 10 times internos de produto para acompanhar operações e tomar decisões críticas. Com o crescimento do volume de processos e a complexidade dos fluxos, a visão disponível não oferecia mais clareza suficiente — dificultando a tomada de decisão e aumentando a carga cognitiva de todos os envolvidos.</p>
+      </div>
+      <div class="overview-col">
+        <div class="ov-label">Tarefa (T)</div>
+        <div class="ov-title">Transformar uma visão densa em uma experiência orientada à ação</div>
+        <p class="ov-text">Reestruturar o Dashboard estratégico da plataforma — criando uma experiência mais eficaz, eficiente e intuitiva. O foco era garantir que os 6 times conseguissem visualizar o status de cada etapa, compreender rapidamente o contexto de cada título e realizar operações sem fricção, reduzindo complexidade e aumentando precisão operacional.</p>
+      </div>
+      <div class="overview-col">
+        <div class="ov-label">Resultado (R)</div>
+        <div class="ov-title">Decisões mais rápidas, menos retrabalho, interface que respeita os usuários</div>
+        <ul class="ov-list">
+          <li>Tomada de decisão mais rápida e assertiva para os 6 times</li>
+          <li>Eliminação de dúvidas e retrabalho operacional recorrente</li>
+          <li>Interface moderna com menor carga cognitiva por operação</li>
+          <li>Visão hierárquica clara com orientação explícita à ação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Team</div>
+    <div class="team-strip anim">
+      <div class="team-cell">
+        <div class="tc-label">My Role</div>
+        <div class="tc-val">Product Designer Sr</div>
+        <div class="tc-val-sm" style="margin-top:.35rem">Discovery end-to-end · Design estratégico</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Plataforma</div>
+        <div class="tc-val">Antecipações de Recebíveis</div>
+        <div class="tc-val-sm" style="margin-top:.35rem">Dashboard estratégico de operações</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Usuários internos</div>
+        <div class="tc-val-sm">Mesa · Tesouraria · Análise de Crédito · Operações · Desembolso · Afiliação</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Timeline</div>
+        <div class="tc-val">2024 – 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTEXT: Situação detalhada -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Contexto</div>
+
+    <div class="anim" style="max-width:680px;margin-bottom:1.75rem">
+      <div class="ov-label" style="margin-bottom:.625rem">Quem usava a plataforma</div>
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.8;margin-bottom:1rem">A plataforma de Antecipações de Recebíveis era o coração operacional de 6 áreas do banco e mais de 10 times internos de produto. Cada um com necessidades distintas, mas todos dependendo da mesma visão para tomar decisões críticas com agilidade e precisão.</p>
+    </div>
+
+    <div class="users-row anim">
+      <span class="user-pill">🏦 Mesa</span>
+      <span class="user-pill">💰 Tesouraria</span>
+      <span class="user-pill">📊 Análise de Crédito</span>
+      <span class="user-pill">⚙️ Operações</span>
+      <span class="user-pill">📤 Desembolso</span>
+      <span class="user-pill">🤝 Afiliação</span>
+    </div>
+
+    <div class="insight-box anim">
+      <div class="insight-lbl">O problema central</div>
+      <p class="insight-text">Com o crescimento do volume de processos e a complexidade dos fluxos, a visão atual <strong>não oferecia clareza suficiente</strong>. A falta de hierarquia visual dificultava a tomada de decisão, aumentava a carga cognitiva e reduzia a eficiência operacional de todos os times simultaneamente.</p>
+    </div>
+
+    <!-- Pain points -->
+    <div class="pain-grid anim">
+      <div class="pain-card">
+        <div class="pain-icon">👁️</div>
+        <div class="pain-title">Visualização fragmentada</div>
+        <div class="pain-desc">Dificuldade de visualizar o status das etapas de forma clara — sem hierarquia visual que indicasse o que era urgente vs. o que era informativo.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">⚡</div>
+        <div class="pain-title">Lentidão nas ações críticas</div>
+        <div class="pain-desc">Falta de rapidez nas ações do fluxo diário — muitos passos para completar operações que deveriam ser simples e rápidas.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔍</div>
+        <div class="pain-title">Informação escondida</div>
+        <div class="pain-desc">Dificuldade para encontrar informações essenciais sem esforço — usuários precisavam navegar por múltiplas áreas para reunir o que precisavam.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">⚠️</div>
+        <div class="pain-title">Insegurança operacional</div>
+        <div class="pain-desc">Dificuldade de realizar operações com segurança — a falta de clareza gerava dúvidas, decisões incorretas e retrabalho constante.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESS: Ação detalhada — STAR: A -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Processo — Ação (A)</div>
+    <div class="anim" style="max-width:680px;margin-bottom:1.75rem">
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.8">O processo foi estruturado em 4 fases de discovery — garantindo que cada decisão de design fosse baseada em evidência, não em suposição.</p>
+    </div>
+
+    <!-- 4-phase flow -->
+    <div class="disc-flow anim">
+      <div class="df-step">
+        <div class="df-phase">Fase 01</div>
+        <div class="df-name">Product Discovery</div>
+        <ul class="df-acts">
+          <li class="df-act">Definição do problema com stakeholders</li>
+          <li class="df-act">Estruturação do backlog de informações</li>
+          <li class="df-act">Mapeamento dos 6 times e suas necessidades específicas</li>
+          <li class="df-act">Identificação de hipóteses prioritárias</li>
+        </ul>
+      </div>
+      <div class="df-step">
+        <div class="df-phase">Fase 02</div>
+        <div class="df-name">Benchmark</div>
+        <ul class="df-acts">
+          <li class="df-act">Análise comparativa de plataformas financeiras similares</li>
+          <li class="df-act">Identificação de referências e práticas de mercado</li>
+          <li class="df-act">Mapeamento de hipóteses de solução</li>
+          <li class="df-act">Definição de critérios de avaliação</li>
+        </ul>
+      </div>
+      <div class="df-step">
+        <div class="df-phase">Fase 03</div>
+        <div class="df-name">Pesquisa Qualitativa</div>
+        <ul class="df-acts">
+          <li class="df-act">Entrevistas com usuários dos 6 times internos</li>
+          <li class="df-act">Identificação de comportamentos e contextos de uso</li>
+          <li class="df-act">Mapeamento de pontos de atrito e necessidades</li>
+          <li class="df-act">Priorização das oportunidades de melhoria</li>
+        </ul>
+      </div>
+      <div class="df-step" style="background:var(--red-dim)">
+        <div class="df-phase">Fase 04</div>
+        <div class="df-name">Testes A/B</div>
+        <ul class="df-acts">
+          <li class="df-act">Comparação entre alternativas de design em cenários reais</li>
+          <li class="df-act">Avaliação de desempenho e usabilidade</li>
+          <li class="df-act">Validação com evidências quantitativas</li>
+          <li class="df-act">Decisão final baseada em dados</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phases" style="margin-top:2rem">
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Discovery</span>
+          <span class="phase-name">Como conduzi a pesquisa</span>
+        </div>
+        <div class="phase-body">
+          <div class="phase-grid">
+            <div class="phase-item"><span class="pi-type">Entrevistas com usuários</span><span class="pi-desc">Sessões com representantes dos 6 times para mapear comportamentos, contextos de uso e principais pontos de fricção na plataforma atual</span></div>
+            <div class="phase-item"><span class="pi-type">Benchmark competitivo</span><span class="pi-desc">Análise de plataformas financeiras similares — identificando padrões de referência para dashboards de operações de alta complexidade</span></div>
+            <div class="phase-item"><span class="pi-type">Definição de hipóteses</span><span class="pi-desc">Estruturação das hipóteses de solução com base nos dados — priorizando as que tinham maior potencial de impacto e viabilidade técnica</span></div>
+            <div class="phase-item"><span class="pi-type">Testes A/B em cenários reais</span><span class="pi-desc">Comparação entre alternativas de design com usuários reais dos times internos — validando qual abordagem reduzia mais a carga cognitiva</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DELIVERABLES -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Entregas e Decisões</div>
+
+    <!-- 01: Before/After -->
+    <div class="feature anim">
+      <div class="feature-top">
+        <span class="feature-num">01</span>
+        <span class="feature-name">Antes e Depois — Dashboard Estratégico</span>
+      </div>
+      <p class="feature-desc">Comparação conceitual entre o estado anterior da plataforma e o redesign — demonstrando a mudança de paradigma de uma visão densa para uma experiência hierárquica e orientada à ação.</p>
+      <div class="ba">
+        <div class="ba-panel">
+          <div class="ba-hdr before">Antes — Visão sem hierarquia</div>
+          <div class="wf-row"><span class="wf-label">Status</span><div class="wf-bar" style="width:100%"></div><span class="wf-badge bad">Opaco</span></div>
+          <div class="wf-row"><span class="wf-label">Ações</span><div class="wf-bar" style="width:100%"></div><span class="wf-badge bad">Escondidas</span></div>
+          <div class="wf-row"><span class="wf-label">Contexto</span><div class="wf-bar" style="width:100%"></div><span class="wf-badge bad">Disperso</span></div>
+          <div class="wf-row"><span class="wf-label">Urgência</span><div class="wf-bar" style="width:100%"></div><span class="wf-badge bad">Invisível</span></div>
+          <div class="wf-row"><span class="wf-label">Decisão</span><div class="wf-bar" style="width:100%"></div><span class="wf-badge bad">Lenta e insegura</span></div>
+        </div>
+        <div class="ba-arr">
+          <div class="ba-arr-ico">→</div>
+          <div class="ba-arr-lbl">Discovery<br>+ Design</div>
+        </div>
+        <div class="ba-panel">
+          <div class="ba-hdr after">Depois — Visão hierárquica e orientada à ação</div>
+          <div class="wf-row"><span class="wf-label">Status</span><div class="wf-bar" style="width:100%;background:rgba(21,128,61,.15)"></div><span class="wf-badge ok">Claro</span></div>
+          <div class="wf-row"><span class="wf-label">Ações</span><div class="wf-bar" style="width:100%;background:rgba(21,128,61,.15)"></div><span class="wf-badge ok">Em destaque</span></div>
+          <div class="wf-row"><span class="wf-label">Contexto</span><div class="wf-bar" style="width:100%;background:rgba(21,128,61,.15)"></div><span class="wf-badge ok">Por título</span></div>
+          <div class="wf-row"><span class="wf-label">Urgência</span><div class="wf-bar" style="width:100%;background:rgba(21,128,61,.15)"></div><span class="wf-badge ok">Visual e imediata</span></div>
+          <div class="wf-row"><span class="wf-label">Decisão</span><div class="wf-bar" style="width:100%;background:rgba(21,128,61,.15)"></div><span class="wf-badge ok">Rápida e precisa</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02: Solution comparison table -->
+    <div class="feature anim">
+      <div class="feature-top">
+        <span class="feature-num">02</span>
+        <span class="feature-name">Avaliação das 4 Propostas de Solução</span>
+      </div>
+      <p class="feature-desc">Após o discovery, 4 propostas foram avaliadas com base em três critérios: clareza para o usuário, impacto na carga cognitiva e viabilidade técnica de implementação.</p>
+      <div class="sol-table">
+        <div class="sol-head">
+          <div class="sol-head-cell">Proposta</div>
+          <div class="sol-head-cell">Clareza</div>
+          <div class="sol-head-cell">Carga cognitiva</div>
+          <div class="sol-head-cell">Viabilidade técnica</div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-cell"><div><div class="sol-name">Reorganização da Arquitetura da Informação</div><div style="font-size:.75rem;color:var(--t3);margin-top:.2rem">Apresentação de prioridade e contexto por título</div></div></div>
+          <div class="sol-cell"><span class="score score-h">↑ Alto</span></div>
+          <div class="sol-cell"><span class="score score-h">↑ Alto</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Implementa hierarquia visual clara</span></div>
+          <div class="sol-cell"><span class="score score-h">↑ Alto</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Estrutural e realizável</span></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-cell"><div><div class="sol-name">Cards de Status Personalizados</div><div style="font-size:.75rem;color:var(--t3);margin-top:.2rem">Prioridade contextual por operação</div></div></div>
+          <div class="sol-cell"><span class="score score-h">↑ Alto</span></div>
+          <div class="sol-cell"><span class="score score-m">→ Médio</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Alguns cartões geram carga visual</span></div>
+          <div class="sol-cell"><span class="score score-h">↑ Alto</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Relativamente simples</span></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-cell"><div><div class="sol-name">Tabela Inteligente com Filtros Avançados</div><div style="font-size:.75rem;color:var(--t3);margin-top:.2rem">Categorias e filtros dinâmicos</div></div></div>
+          <div class="sol-cell"><span class="score score-m">→ Médio</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Bons detalhes, depende da execução</span></div>
+          <div class="sol-cell"><span class="score score-m">→ Médio</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Depende de categorização adequada</span></div>
+          <div class="sol-cell"><span class="score score-m">→ Médio</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Requer backend específico</span></div>
+        </div>
+        <div class="sol-row">
+          <div class="sol-cell"><div><div class="sol-name">Dashboard Unificado com Análise de Retificações</div><div style="font-size:.75rem;color:var(--t3);margin-top:.2rem">Visão global com análise contextual em tempo real</div></div></div>
+          <div class="sol-cell"><span class="score score-h">↑ Alto</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Guia ações em tempo real</span></div>
+          <div class="sol-cell"><span class="score score-m">→ Médio</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Visual global de informações</span></div>
+          <div class="sol-cell"><span class="score score-m">→ Médio</span><span style="font-size:.725rem;color:var(--t2);margin-left:.25rem">Requer replicação centralizada</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03: Results -->
+    <div class="feature anim">
+      <div class="feature-top">
+        <span class="feature-num">03</span>
+        <span class="feature-name">Resultados — Impacto nos 6 Times</span>
+      </div>
+      <p class="feature-desc">Os resultados qualitativos observados após a reestruturação do dashboard — validados com os times internos através de testes e feedback contínuo.</p>
+      <div class="result-grid">
+        <div class="res-card">
+          <div class="res-icon">⚡</div>
+          <div class="res-title">Tomada de decisão mais rápida e assertiva</div>
+          <div class="res-desc">Com hierarquia visual clara e contexto por título, os times passaram a tomar decisões operacionais com mais agilidade e confiança — sem precisar buscar informações em múltiplas áreas.</div>
+        </div>
+        <div class="res-card">
+          <div class="res-icon">✓</div>
+          <div class="res-title">Eliminação de dúvidas e retrabalho</div>
+          <div class="res-desc">A visão orientada à ação reduziu os erros por falta de contexto — eliminando o ciclo de dúvidas, confirmações com outros times e retrabalho operacional recorrente.</div>
+        </div>
+        <div class="res-card">
+          <div class="res-icon">🧠</div>
+          <div class="res-title">Interface com menor carga cognitiva</div>
+          <div class="res-desc">A modernização da interface reduziu a demanda mental para operar a plataforma — permitindo que os times mantivessem foco na decisão, não no esforço de navegação.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04: Learnings -->
+    <div class="feature anim">
+      <div class="feature-top">
+        <span class="feature-num">04</span>
+        <span class="feature-name">Aprendizados do Projeto</span>
+      </div>
+      <p class="feature-desc">Princípios consolidados ao longo do processo — especialmente relevantes para design de plataformas financeiras de alta complexidade com múltiplos times de usuários internos.</p>
+      <div class="learn-grid">
+        <div class="learn-item">
+          <span class="learn-num">01</span>
+          <span class="learn-text"><strong>Testar cedo</strong> — validar hipóteses antes de investir em design de alta fidelidade evita retrabalho e mantém o foco no problema real</span>
+        </div>
+        <div class="learn-item">
+          <span class="learn-num">02</span>
+          <strong class="learn-text"><strong>Validar continuamente</strong> — uma única rodada de pesquisa não é suficiente; a validação contínua com os 6 times revelou nuances que não apareceriam em um único teste</span>
+        </div>
+        <div class="learn-item">
+          <span class="learn-num">03</span>
+          <span class="learn-text"><strong>Iterar em ciclos curtos</strong> — ciclos rápidos de descoberta e validação permitem ajustar a direção sem comprometer o prazo ou a qualidade da entrega</span>
+        </div>
+        <div class="learn-item">
+          <span class="learn-num">04</span>
+          <span class="learn-text"><strong>Incorporar feedback em tempo real</strong> — o feedback dos times durante o processo foi mais valioso do que qualquer benchmark externo para definir o que realmente importava</span>
+        </div>
+        <div class="learn-item">
+          <span class="learn-num">05</span>
+          <span class="learn-text"><strong>Priorizar a redução do esforço cognitivo</strong> — em plataformas de alta complexidade, simplificar a percepção é tão importante quanto simplificar o fluxo</span>
+        </div>
+        <div class="learn-item">
+          <span class="learn-num">06</span>
+          <span class="learn-text"><strong>Comunicação clara e assertiva com outras áreas</strong> — com 6 times envolvidos, a capacidade de comunicar decisões de design com linguagem de negócio foi determinante para o alinhamento</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div class="wrap">
+  <div class="closing anim">
+    <div class="closing-h">Thanks for reading</div>
+    <p class="closing-sub">Quer conversar sobre design para plataformas financeiras de alta complexidade?</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="mailto:simonjvieira@gmail.com" class="btn btn-r">Falar comigo →</a>
+      <a href="./index.html#cases" class="btn btn-g">Ver outros cases</a>
+    </div>
+  </div>
+  <div class="case-nav-row">
+    <a href="./index.html#cases">← Todos os cases</a>
+    <a href="./case-central-notificacoes.html">Próximo case →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">Simon Benlulu · <a href="./index.html" style="color:inherit">Portfolio</a></div>
+  <div class="fr">
+    <a href="https://www.linkedin.com/in/simonbenlulu/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:simonjvieira@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>40));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.anim').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

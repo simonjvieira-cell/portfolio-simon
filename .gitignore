@@ -1,0 +1,20 @@
+# Arquivos internos — não publicar
+CLAUDE.md
+DESIGN.md
+PRODUCT.md
+plan.md
+curriculo-linkedin.txt
+formacao-academica-linkedin.txt
+prompt-para-cases.txt
+quests-para-entrevista.txt
+star-framework-printable.pdf
+trajetória começou muito conectada.txt
+Estruturação & Storytelling dos Cases
+
+# Pastas de referência interna
+referencias/
+cases/
+
+# Sistema
+.DS_Store
+Thumbs.db

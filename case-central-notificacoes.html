@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Notificações · Simon Benlulu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #F8F6F2;
+      --bg-1:    #F0EDE7;
+      --white:   #FFFFFF;
+      --t1:      #0E0D0B;
+      --t2:      #494743;
+      --t3:      #9A9790;
+      --red:     #6D1717;
+      --red-dim: rgba(109,23,23,.07);
+      --green:   #15803D;
+      --border:  rgba(14,13,11,.09);
+      --sh:      0 1px 3px rgba(0,0,0,.05);
+      --sh-md:   0 4px 16px rgba(0,0,0,.08);
+      --fd: 'DM Serif Display', Georgia, serif;
+      --fb: 'Inter', system-ui, sans-serif;
+      --ease: cubic-bezier(.16,1,.3,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    html { font-size: 16px; scroll-behavior: smooth }
+    body { background: var(--bg); color: var(--t1); font-family: var(--fb); line-height: 1.6; -webkit-font-smoothing: antialiased }
+    img { display: block; max-width: 100% }
+    a { text-decoration: none; color: inherit }
+
+    /* ── LAYOUT ── */
+    .wrap        { width: 100%; max-width: 1060px; margin: 0 auto; padding: 0 2rem }
+    .wrap-text   { width: 100%; max-width: 720px;  margin: 0 auto; padding: 0 2rem }
+    .divider     { height: 1px; background: var(--border); margin: 0 }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: .875rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: background .3s, border-color .3s, backdrop-filter .3s;
+    }
+    #nav.stuck { background: rgba(248,246,242,.9); backdrop-filter: blur(16px); border-color: var(--border) }
+    .nav-logo { font-family: var(--fd); font-size: .9375rem; color: var(--t1) }
+    .nav-back {
+      display: flex; align-items: center; gap: .375rem;
+      font-size: .8125rem; font-weight: 500; color: var(--t2);
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--t1) }
+
+    /* ── CASE HERO ── */
+    .case-hero {
+      padding: 7.5rem 0 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1.5rem }
+    .tag {
+      font-size: .6rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: .2rem .5rem; border-radius: 4px;
+    }
+    .tag-r { color: var(--red);  background: var(--red-dim) }
+    .tag-m { color: var(--t3);   background: rgba(14,13,11,.05) }
+
+    .case-title {
+      font-family: var(--fd);
+      font-size: clamp(2.25rem, 5.5vw, 4rem);
+      line-height: 1.05; letter-spacing: -.03em;
+      color: var(--t1); margin-bottom: .375rem;
+    }
+    .case-subtitle {
+      font-size: 1.125rem; color: var(--t2);
+      margin-bottom: 2rem; font-weight: 300;
+    }
+    .cover-wrap{margin:0 auto 3rem;max-width:520px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.08);border:1px solid var(--border)}
+    .cover-wrap img{width:100%;display:block;height:auto}
+
+    /* ── METRICS ── */
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border) }
+    @media(max-width:640px) { .metrics { grid-template-columns: 1fr } }
+    .metric {
+      background: var(--bg);
+      padding: 2rem 1.75rem;
+      display: flex; flex-direction: column; gap: .375rem;
+    }
+    .metric-val {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      line-height: 1; letter-spacing: -.03em;
+      color: var(--red);
+    }
+    .metric-lbl { font-size: .8125rem; color: var(--t2); line-height: 1.5 }
+
+    /* ── SECTIONS ── */
+    .section { padding: 4rem 0 }
+
+    .sec-label {
+      font-size: .575rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 2rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border) }
+
+    .sec-h2 {
+      font-family: var(--fd);
+      font-size: clamp(1.5rem, 3vw, 2.125rem);
+      line-height: 1.1; letter-spacing: -.02em;
+      color: var(--t1); margin-bottom: 1rem;
+    }
+
+    /* ── OVERVIEW 3 COLS ── */
+    .overview-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0; background: var(--border);
+    }
+    @media(max-width:720px) { .overview-grid { grid-template-columns: 1fr } }
+    .overview-col {
+      background: var(--bg); padding: 2rem 1.75rem;
+    }
+    .ov-label {
+      font-size: .575rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--t3); margin-bottom: .875rem;
+    }
+    .ov-title {
+      font-family: var(--fd); font-size: 1.125rem;
+      color: var(--t1); margin-bottom: .625rem; letter-spacing: -.01em;
+    }
+    .ov-text { font-size: .875rem; color: var(--t2); line-height: 1.75 }
+    .ov-list { list-style: none; display: flex; flex-direction: column; gap: .5rem }
+    .ov-list li { display: flex; align-items: flex-start; gap: .5rem; font-size: .875rem; color: var(--t2); line-height: 1.55 }
+    .ov-list li::before { content: '→'; color: var(--red); flex-shrink: 0; font-size: .8rem; margin-top: .05rem }
+
+    /* ── TEAM STRIP ── */
+    .team-strip {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0; background: var(--border);
+    }
+    .team-cell { background: var(--bg-1); padding: 1.5rem 1.75rem }
+    .tc-label { font-size: .575rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--t3); margin-bottom: .5rem }
+    .tc-val  { font-size: .875rem; font-weight: 500; color: var(--t1); line-height: 1.5 }
+    .tc-val-sm { font-size: .8rem; color: var(--t2); line-height: 1.6 }
+
+    /* ── CONTEXT NUMBERS ── */
+    .ctx-nums {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px; background: var(--border); margin: 2rem 0;
+    }
+    .ctx-num { background: var(--bg); padding: 1.5rem 1.75rem }
+    .ctx-num-val { font-family: var(--fd); font-size: 2rem; color: var(--t1); letter-spacing: -.03em; margin-bottom: .25rem }
+    .ctx-num-lbl { font-size: .8rem; color: var(--t2); line-height: 1.5 }
+
+    /* ── PROCESS PHASES ── */
+    .phases { display: flex; flex-direction: column; gap: 0 }
+    .phase { border: 1px solid var(--border); border-bottom: none }
+    .phase:last-child { border-bottom: 1px solid var(--border) }
+    .phase-header {
+      display: flex; align-items: center; gap: 1.25rem;
+      padding: 1.5rem 1.75rem; background: var(--bg);
+    }
+    .phase-num {
+      font-size: .575rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--red); white-space: nowrap;
+    }
+    .phase-name {
+      font-family: var(--fd); font-size: 1.125rem; color: var(--t1); letter-spacing: -.01em;
+    }
+    .phase-body { padding: 0 1.75rem 1.75rem }
+    .phase-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: .5rem;
+    }
+    @media(max-width:560px) { .phase-grid { grid-template-columns: 1fr } }
+    .phase-item {
+      display: flex; flex-direction: column; gap: .2rem;
+      padding: .75rem 1rem;
+      background: var(--bg-1);
+      border-radius: 6px;
+    }
+    .pi-type { font-size: .55rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--t3) }
+    .pi-desc { font-size: .8125rem; color: var(--t2); line-height: 1.45 }
+
+    /* ── DELIVERABLES GRID ── */
+    .del-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: 12px; overflow: hidden; }
+    @media(max-width:640px) { .del-grid { grid-template-columns: 1fr } }
+    .del-card { background: var(--bg); padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: .5rem; }
+    .del-card-wide { grid-column: 1 / -1; background: var(--bg-1); }
+    .del-num { font-size: .55rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red); margin-bottom: .125rem; }
+    .del-title { font-family: var(--fd); font-size: 1.125rem; color: var(--t1); letter-spacing: -.015em; line-height: 1.2; }
+    .del-badge { display: inline-flex; align-items: center; gap: .35rem; background: rgba(21,128,61,.07); border: 1px solid rgba(21,128,61,.18); border-radius: 4px; padding: .175rem .5rem; align-self: flex-start; margin-top: .125rem; }
+    .del-badge-val { font-family: var(--fd); font-size: .9375rem; color: var(--green); letter-spacing: -.01em; }
+    .del-badge-lbl { font-size: .675rem; color: var(--green); }
+    .del-desc { font-size: .875rem; color: var(--t2); line-height: 1.7; margin-top: .25rem; }
+
+    /* ── FEATURES (legacy, kept for other sections) ── */
+    .feature { padding: 3.5rem 0; border-bottom: 1px solid var(--border) }
+    .feature:first-child { padding-top: 0 }
+    .feature-top {
+      display: flex; align-items: baseline; gap: 1rem;
+      margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .feature-num { font-size: .575rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red) }
+    .feature-name { font-family: var(--fd); font-size: 1.375rem; color: var(--t1); letter-spacing: -.015em }
+    .feature-metric {
+      margin-left: auto;
+      display: flex; flex-direction: column; align-items: flex-end; gap: .125rem;
+    }
+    .fm-val { font-family: var(--fd); font-size: 1.375rem; color: var(--green); letter-spacing: -.02em }
+    .fm-lbl { font-size: .7rem; color: var(--t3) }
+    .feature-desc { font-size: .9375rem; color: var(--t2); line-height: 1.75; margin-bottom: 1.5rem; max-width: 640px }
+    .feature-img {
+      width: 100%; border-radius: 10px;
+      box-shadow: var(--sh-md);
+      overflow: hidden;
+    }
+    .feature-img img { width: 100%; display: block }
+    .feature-img-ph {
+      width: 100%; aspect-ratio: 16/8;
+      background: var(--bg-1); border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--fd); font-size: 1.5rem; color: rgba(14,13,11,.1);
+    }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem }
+    @media(max-width:640px) { .feature-grid { grid-template-columns: 1fr } }
+
+    /* ── CLOSING ── */
+    .closing {
+      padding: 5rem 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .closing-h { font-family: var(--fd); font-size: clamp(1.75rem, 3.5vw, 2.5rem); color: var(--t1); margin-bottom: 1rem; letter-spacing: -.02em }
+    .closing-sub { font-size: 1rem; color: var(--t2); margin-bottom: 2.5rem }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .7rem 1.4rem; border-radius: 7px;
+      font-size: .875rem; font-weight: 600; border: none; cursor: pointer;
+      transition: transform .18s var(--ease), box-shadow .2s, background .2s, color .2s, border-color .2s;
+    }
+    .btn:hover { transform: translateY(-1px) }
+    .btn-r { background: var(--red); color: #fff }
+    .btn-r:hover { background: #7E1C1C; box-shadow: 0 8px 24px rgba(109,23,23,.2) }
+    .btn-g { background: transparent; color: var(--t2); border: 1px solid var(--border) }
+    .btn-g:hover { border-color: rgba(14,13,11,.2); color: var(--t1) }
+
+    .case-nav-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 2rem 0; flex-wrap: wrap; gap: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .case-nav-row a { display: flex; align-items: center; gap: .4rem; font-size: .875rem; font-weight: 500; color: var(--t2); transition: color .2s }
+    .case-nav-row a:hover { color: var(--t1) }
+
+    /* ── BODY TEXT ── */
+    .body { font-size: .9375rem; color: var(--t2); line-height: 1.8; margin-bottom: 1.25rem }
+    .body:last-child { margin-bottom: 0 }
+    .body strong { color: var(--t1); font-weight: 500 }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 1.5rem 2rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .fl { font-size: .8rem; color: var(--t3) }
+    .fr { display: flex; gap: 1.5rem }
+    .fr a { font-size: .8rem; color: var(--t3); transition: color .2s }
+    .fr a:hover { color: var(--t1) }
+
+    .anim { opacity: 0; transform: translateY(16px); transition: opacity .5s var(--ease), transform .5s var(--ease) }
+    .anim.in { opacity: 1; transform: none }
+    :focus-visible { outline: 2px solid var(--red); outline-offset: 3px }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="./index.html" class="nav-logo">Simon Benlulu</a>
+  <a href="./index.html#cases" class="nav-back">← Todos os cases</a>
+</nav>
+
+<!-- CASE HERO -->
+<section class="case-hero">
+  <div class="wrap">
+    <div class="tag-row anim">
+      <span class="tag tag-r">Itaú BBA</span>
+      <span class="tag tag-m">Discovery</span>
+      <span class="tag tag-m">UX Research</span>
+      <span class="tag tag-m">Bankline</span>
+      <span class="tag tag-m">2023–2024</span>
+    </div>
+    <h1 class="case-title anim">Central de Notificações</h1>
+    <p class="case-subtitle anim">Bankline — internet banking corporativo do Itaú BBA</p>
+
+    <div class="cover-wrap anim">
+      <img src="./assets/images/itau/cover-central-de-notf-itau-min.png" alt="Central de Notificações — Itaú BBA Bankline" loading="eager">
+    </div>
+
+    <div class="anim" style="display:flex;align-items:flex-start;gap:.875rem;background:rgba(14,13,11,.04);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:2rem">
+      <span style="font-size:1.1rem;flex-shrink:0;margin-top:.05rem">🔒</span>
+      <p style="font-size:.8125rem;color:var(--t2);line-height:1.65"><strong style="color:var(--t2);font-weight:600">Confidencialidade:</strong> Por motivos de compliance, este estudo não exibe telas, dados ou fluxos reais da plataforma. As representações visuais são conceituais e abstratas — criadas para demonstração do processo de design. Nenhuma informação interna, funcionalidade real ou dado sigiloso do Itaú BBA é exibido.</p>
+    </div>
+
+    <!-- METRICS -->
+    <div class="metrics anim">
+      <div class="metric">
+        <div class="metric-val">↓ Chamados</div>
+        <div class="metric-lbl">Redução de chamados de suporte originados por falhas de comunicação em múltiplas áreas críticas da plataforma</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">Top página</div>
+        <div class="metric-lbl">Central de Notificações tornou-se uma das páginas mais acessadas do Bankline corporativo após o lançamento</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">Novo IBBA</div>
+        <div class="metric-lbl">Diante do sucesso, a feature foi implementada no redesign do novo Itaú BBA — de projeto interno a produto estratégico</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Project Overview</div>
+    <div class="overview-grid anim">
+      <div class="overview-col">
+        <div class="ov-label">Background</div>
+        <div class="ov-title">Um banco que comunicava, mas não era ouvido</div>
+        <p class="ov-text">O Bankline é a plataforma de internet banking corporativo do Itaú BBA. Avisos operacionais, atualizações e notificações críticas chegavam de forma fragmentada, sem hierarquia, dispersa por pontos diferentes da interface.</p>
+      </div>
+      <div class="overview-col">
+        <div class="ov-label">Challenge</div>
+        <div class="ov-title">Aumentar a conversão de aprovados para pagantes</div>
+        <p class="ov-text">Comunicações críticas passavam despercebidas pelos usuários corporativos — gerando falhas operacionais nos clientes, aumento de chamados em atendimento e impacto financeiro direto nas áreas comercial e de operações do banco.</p>
+      </div>
+      <div class="overview-col">
+        <div class="ov-label">Objectives</div>
+        <div class="ov-title">O que precisávamos alcançar</div>
+        <ul class="ov-list">
+          <li>Criar experiência unificada para todas as notificações do Bankline</li>
+          <li>Hierarquizar comunicações por urgência e relevância</li>
+          <li>Reduzir chamados oriundos de informações perdidas</li>
+          <li>Construir arquitetura escalável para evoluções futuras</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Team</div>
+    <div class="team-strip anim">
+      <div class="team-cell">
+        <div class="tc-label">My Role</div>
+        <div class="tc-val">Product Designer</div>
+        <div class="tc-val-sm" style="margin-top:.375rem">Liderança end-to-end da iniciativa</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Activities</div>
+        <div class="tc-val-sm">Discovery · IA da Central · Prototipagem · Testes de conceito · Handoff</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Stakeholders</div>
+        <div class="tc-val-sm">Produto · Tecnologia · Negócio · Compliance</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Timeline</div>
+        <div class="tc-val">2023 – 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTEXT -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Context</div>
+    <div class="anim" style="max-width:680px;margin-bottom:2rem">
+      <div class="ov-label" style="margin-bottom:.625rem">Starting Point</div>
+      <p class="body">O problema não era falta de comunicação — o banco comunicava. O problema era que <strong>a comunicação não chegava</strong>. Notificações dispersas, sem hierarquia, em diferentes partes da interface criavam uma experiência fragmentada onde o importante se perdia no irrelevante.</p>
+      <p class="body">Isso tinha um custo real: usuários corporativos tomavam decisões com informação incompleta, áreas de atendimento absorviam chamados evitáveis, e a confiança na plataforma como canal de comunicação era baixa.</p>
+    </div>
+
+    <div class="ctx-nums anim">
+      <div class="ctx-num">
+        <div class="ctx-num-val">↑ Chamados</div>
+        <div class="ctx-num-lbl">Volume de suporte originado por falhas de comunicação na plataforma</div>
+      </div>
+      <div class="ctx-num">
+        <div class="ctx-num-val">Fragmentação</div>
+        <div class="ctx-num-lbl">Notificações distribuídas sem hierarquia em múltiplos pontos da interface</div>
+      </div>
+      <div class="ctx-num">
+        <div class="ctx-num-val">Impacto $</div>
+        <div class="ctx-num-lbl">Impacto financeiro direto em áreas comercial e de operações do banco</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESS -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Process</div>
+    <div class="phases anim">
+
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Phase 1</span>
+          <span class="phase-name">Discovery</span>
+        </div>
+        <div class="phase-body">
+          <div class="phase-grid">
+            <div class="phase-item">
+              <span class="pi-type">Research</span>
+              <span class="pi-desc">Entrevistas com usuários corporativos — entendendo onde e por que notificações se perdiam</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Data Analysis</span>
+              <span class="pi-desc">Mapeamento dos pontos de falha na comunicação e análise de volume de chamados por origem</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Stakeholders</span>
+              <span class="pi-desc">Entrevistas com times de produto, tech, negócio e compliance para mapear restrições e prioridades</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Problem Framing</span>
+              <span class="pi-desc">Definição das categorias de notificação e modelo de hierarquia por urgência e relevância</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Phase 2</span>
+          <span class="phase-name">Design &amp; Handoff</span>
+        </div>
+        <div class="phase-body">
+          <div class="phase-grid">
+            <div class="phase-item">
+              <span class="pi-type">Information Architecture</span>
+              <span class="pi-desc">Definição da IA da Central — estados (lida/não lida, urgente, arquivada) e modelo de navegação</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Quick Prototyping</span>
+              <span class="pi-desc">Wireframes de conceito para validação rápida com usuários antes de investimento em alta fidelidade</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">High Fidelity</span>
+              <span class="pi-desc">Design visual completo seguindo o sistema de design do Bankline — desktop e mobile</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Delivery</span>
+              <span class="pi-desc">Handoff para engenharia com especificações, estados de componente e documentação de comportamento</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESS ARTIFACTS — Option A -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Process Artifacts</div>
+
+    <!-- Research Findings -->
+    <div style="margin-bottom:3.5rem" class="anim">
+      <div style="font-family:'DM Serif Display',serif;font-size:clamp(1.3rem,2.5vw,1.75rem);letter-spacing:-.02em;color:var(--t1);margin-bottom:.875rem">01 · Achados de Pesquisa</div>
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem;max-width:640px">Insights representativos das entrevistas com usuários corporativos e times internos. Dados anonimizados por confidencialidade.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:1.25rem">
+        <div style="background:var(--bg-card);padding:1.5rem 1.25rem"><div style="font-family:'DM Serif Display',serif;font-size:1.875rem;color:var(--accent);letter-spacing:-.03em;line-height:1;margin-bottom:.3rem">↑ Chamados</div><div style="font-size:.775rem;color:var(--t2);line-height:1.5">Volume de suporte originado por informações que passavam despercebidas na plataforma</div></div>
+        <div style="background:var(--bg-card);padding:1.5rem 1.25rem"><div style="font-family:'DM Serif Display',serif;font-size:1.875rem;color:var(--accent);letter-spacing:-.03em;line-height:1;margin-bottom:.3rem">7+</div><div style="font-size:.775rem;color:var(--t2);line-height:1.5">Pontos distintos da interface onde notificações eram exibidas de forma fragmentada</div></div>
+        <div style="background:var(--bg-card);padding:1.5rem 1.25rem"><div style="font-family:'DM Serif Display',serif;font-size:1.875rem;color:#15803D;letter-spacing:-.03em;line-height:1;margin-bottom:.3rem">1</div><div style="font-size:.775rem;color:var(--t2);line-height:1.5">Hub centralizado criado — unificando todas as comunicações críticas da plataforma</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;gap:.875rem"><div style="width:3px;border-radius:2px;background:var(--accent);flex-shrink:0;align-self:stretch"></div><div><p style="font-size:.875rem;font-style:italic;color:var(--t1);line-height:1.65;margin-bottom:.5rem">"Às vezes eu nem sabia que tinha algum aviso. Só descobria quando o cliente já estava com problema."</p><div style="font-size:.675rem;font-weight:600;color:var(--t3);letter-spacing:.05em;text-transform:uppercase">Usuário corporativo · Área financeira</div></div></div>
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;gap:.875rem"><div style="width:3px;border-radius:2px;background:var(--accent);flex-shrink:0;align-self:stretch"></div><div><p style="font-size:.875rem;font-style:italic;color:var(--t1);line-height:1.65;margin-bottom:.5rem">"Preciso checar em vários lugares pra ter certeza que não perdi nada importante. É muito tempo perdido."</p><div style="font-size:.675rem;font-weight:600;color:var(--t3);letter-spacing:.05em;text-transform:uppercase">Usuário corporativo · Operações</div></div></div>
+      </div>
+    </div>
+
+    <!-- IA da Central -->
+    <div style="margin-bottom:3.5rem;padding-bottom:3.5rem;border-bottom:1px solid var(--border)" class="anim">
+      <div style="font-family:'DM Serif Display',serif;font-size:clamp(1.3rem,2.5vw,1.75rem);letter-spacing:-.02em;color:var(--t1);margin-bottom:.875rem">02 · Arquitetura da Central</div>
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem;max-width:640px">Estrutura de informação definida antes do design visual — categorias, hierarquia de urgência e estados de cada notificação.</p>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1.5rem;align-items:center">
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.25rem">
+          <div style="font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.875rem">Antes — Notificações dispersas</div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:var(--bg-1);border:1px solid var(--border);margin-bottom:.4rem;font-size:.775rem;color:var(--t2)"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Header da plataforma<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#ef4444">✗</div></div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:var(--bg-1);border:1px solid var(--border);margin-bottom:.4rem;font-size:.775rem;color:var(--t2)"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Sidebar do módulo<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#ef4444">✗</div></div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:var(--bg-1);border:1px solid var(--border);margin-bottom:.4rem;font-size:.775rem;color:var(--t2)"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Pop-up na tela inicial<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#ef4444">✗</div></div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:var(--bg-1);border:1px solid var(--border);font-size:.775rem;color:var(--t2)"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>E-mail externo<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#ef4444">✗</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem"><div style="font-size:1.5rem;color:var(--accent)">→</div><div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-align:center">Discovery</div></div>
+        <div style="background:var(--bg-card);border:1px solid rgba(109,23,23,.25);border-radius:10px;padding:1.25rem">
+          <div style="font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#15803D;margin-bottom:.875rem">Depois — Central unificada</div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:rgba(21,128,61,.05);border:1px solid rgba(21,128,61,.2);margin-bottom:.4rem;font-size:.775rem;color:#15803D;font-weight:500"><div style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0"></div>Urgentes<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#15803D">✓</div></div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:rgba(21,128,61,.05);border:1px solid rgba(21,128,61,.2);margin-bottom:.4rem;font-size:.775rem;color:#15803D;font-weight:500"><div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div>Operacionais<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#15803D">✓</div></div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:rgba(21,128,61,.05);border:1px solid rgba(21,128,61,.2);margin-bottom:.4rem;font-size:.775rem;color:#15803D;font-weight:500"><div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;flex-shrink:0"></div>Informativas<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#15803D">✓</div></div>
+          <div style="display:flex;align-items:center;gap:.5rem;padding:.5rem .625rem;border-radius:6px;background:rgba(21,128,61,.05);border:1px solid rgba(21,128,61,.2);font-size:.775rem;color:#15803D;font-weight:500"><div style="width:8px;height:8px;border-radius:50%;background:#9ca3af;flex-shrink:0"></div>Arquivadas<div style="margin-left:auto;font-size:.875rem;font-weight:700;color:#15803D">✓</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURES / DELIVERABLES -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Main Screens</div>
+
+    <div class="del-grid anim">
+
+      <div class="del-card">
+        <span class="del-num">Feature 01</span>
+        <span class="del-title">Central de Notificações — visão geral</span>
+        <div class="del-badge"><span class="del-badge-val">↓ Ruído</span><span class="del-badge-lbl">Redução de ruído cognitivo</span></div>
+        <p class="del-desc">Hub unificado com todas as notificações organizadas por categoria e urgência. O usuário corporativo tem pela primeira vez uma visão completa de tudo que precisa de atenção na plataforma.</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-num">Feature 02</span>
+        <span class="del-title">Hierarquia e estados de notificação</span>
+        <p class="del-desc">Sistema de estados claro: não lida, urgente, arquivada. Cada tipo de notificação tem tratamento visual distinto para que a urgência seja perceptível sem necessidade de leitura completa.</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-num">Feature 03</span>
+        <span class="del-title">Fluxo de detalhe e ação</span>
+        <div class="del-badge"><span class="del-badge-val">↑ Ação</span><span class="del-badge-lbl">Notificações acionáveis</span></div>
+        <p class="del-desc">Cada notificação tem um caminho claro de leitura e ação. O usuário consegue entender o contexto, decidir a resposta e agir sem sair da Central — reduzindo fricção e aumentando a taxa de resposta a comunicados críticos.</p>
+      </div>
+
+      <div class="del-card">
+        <span class="del-num">Feature 04</span>
+        <span class="del-title">Filtros e gerenciamento</span>
+        <p class="del-desc">Sistema de filtros por categoria, período e status. Usuários corporativos que gerenciam múltiplos contratos e operações conseguem encontrar rapidamente a notificação que precisam sem scrollar por histórico irrelevante.</p>
+      </div>
+
+      <div class="del-card del-card-wide">
+        <span class="del-num">Feature 05</span>
+        <span class="del-title">Especificações e Handoff</span>
+        <p class="del-desc">Documentação completa de componentes, estados e comportamentos para engenharia. A Central foi construída para ser escalável — novos tipos de notificação podem ser adicionados sem redesenho do sistema.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- CLOSING -->
+<div class="wrap">
+  <div class="closing anim">
+    <div class="closing-h">Thanks for reading</div>
+    <p class="closing-sub">Quer entender melhor o processo ou discutir o case?</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="mailto:simonjvieira@gmail.com" class="btn btn-r">Falar comigo →</a>
+      <a href="./index.html#cases" class="btn btn-g">Ver outros cases</a>
+    </div>
+  </div>
+
+  <div class="case-nav-row">
+    <a href="./index.html#cases">← Todos os cases</a>
+    <a href="./case-lacrei.html">Próximo case →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">Simon Benlulu · <a href="./index.html" style="color:inherit">Portfolio</a></div>
+  <div class="fr">
+    <a href="https://www.linkedin.com/in/simonbenlulu/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:simonjvieira@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 40));
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
+}), { threshold: .08 });
+document.querySelectorAll('.anim').forEach(el => io.observe(el));
+document.querySelectorAll('img').forEach(img => img.addEventListener('error', () => img.style.display = 'none'));
+</script>
+</body>
+</html>

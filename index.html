@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simon Benlulu — Senior Product Designer · Discovery · UX Research · Service Design · IA Driven">
+  <title>Simon Benlulu — Senior Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-0:       #F8F6F2;
+      --bg-1:       #F0EDE7;
+      --bg-card:    #FFFFFF;
+      --text-1:     #0E0D0B;
+      --text-2:     #494743;
+      --text-3:     #9A9790;
+      --accent:     #6D1717;
+      --accent-hi:  #7E1C1C;
+      --accent-dim: rgba(109,23,23,.07);
+      --accent-glow:rgba(109,23,23,.16);
+      --green:      #15803D;
+      --border:     rgba(14,13,11,.09);
+      --border-hi:  rgba(109,23,23,.28);
+      --sh-sm:      0 1px 3px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.03);
+      --sh-md:      0 4px 16px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.05);
+      --sh-lg:      0 12px 40px rgba(0,0,0,.11),0 4px 12px rgba(0,0,0,.06);
+      --fd:         'DM Serif Display',Georgia,serif;
+      --fb:         'Inter',system-ui,sans-serif;
+      --ease:       cubic-bezier(.16,1,.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{background:var(--bg-0);color:var(--text-1);font-family:var(--fb);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+    button{cursor:pointer;font-family:var(--fb)}
+
+
+    .wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 2rem}
+
+    /* NAV */
+    #nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:background .35s,border-color .35s,backdrop-filter .35s}
+    #nav.stuck{background:rgba(248,246,242,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-color:var(--border)}
+    .nav-logo{font-family:var(--fd);font-size:1rem;letter-spacing:-.015em;color:var(--text-1)}
+    .nav-r{display:flex;align-items:center;gap:2rem}
+    .nav-links{display:flex;gap:1.75rem;list-style:none}
+    .nav-links a{font-size:.8125rem;font-weight:500;color:var(--text-2);transition:color .2s}
+    .nav-links a:hover{color:var(--text-1)}
+    .lang-sw{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+    .lbtn{background:none;border:none;padding:.3rem .55rem;font-size:.6875rem;font-weight:700;letter-spacing:.06em;color:var(--text-3);transition:background .2s,color .2s}
+    .lbtn.on{background:var(--accent-dim);color:var(--accent)}
+    .nav-mob{display:none;background:none;border:none;font-size:1.3rem;color:var(--text-2)}
+    @media(max-width:767px){
+      .nav-links{display:none}
+      .nav-links.open{display:flex;flex-direction:column;position:fixed;inset:0;background:var(--bg-0);align-items:center;justify-content:center;gap:2.5rem;z-index:490}
+      .nav-links.open a{font-size:1.4rem}
+      .nav-mob{display:block;z-index:510}
+    }
+
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.3rem;border-radius:7px;font-size:.875rem;font-weight:600;letter-spacing:.01em;border:none;transition:transform .18s var(--ease),box-shadow .22s,background .2s,border-color .2s,color .2s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-p{background:var(--accent);color:#fff}
+    .btn-p:hover{background:var(--accent-hi);box-shadow:0 8px 24px var(--accent-glow)}
+    .btn-g{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+    .btn-g:hover{border-color:rgba(14,13,11,.22);color:var(--text-1)}
+    .btn-sm{padding:.5rem 1rem;font-size:.8125rem}
+
+    .divider{height:1px;background:var(--border)}
+
+    /* SECTIONS */
+    .section{padding:6.5rem 0}
+    .section-alt{background:var(--bg-1)}
+    .eyebrow{display:flex;align-items:center;gap:.45rem;font-size:.625rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem}
+    .eyebrow::before{content:'';display:block;width:14px;height:1px;background:var(--accent)}
+    .sh2{font-family:var(--fd);font-size:clamp(1.75rem,3.5vw,2.75rem);line-height:1.1;letter-spacing:-.02em;color:var(--text-1)}
+
+    /* HERO */
+    #hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:7rem 0 4rem;position:relative;overflow:hidden}
+    #hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 65% 65% at 50% 40%,black 20%,transparent 100%);pointer-events:none}
+
+    /* GRID PROPORÇÃO ÁUREA: 62% texto / 38% foto */
+    .hero-grid{display:grid;grid-template-columns:1fr 340px;gap:3.5rem;align-items:center;position:relative;z-index:1}
+    @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:0}.hero-photo-col{display:none}}
+
+    .h-inner{display:flex;flex-direction:column}
+    .h-name{font-family:var(--fd);font-size:clamp(1.85rem,3.5vw,2.75rem);letter-spacing:-.025em;color:var(--text-1);line-height:1.08;margin-bottom:.35rem;opacity:0;transform:translateY(10px)}
+    .h-eye{display:inline-flex;align-items:center;gap:.5rem;font-size:.625rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;opacity:0;transform:translateY(10px)}
+    .h-eye::before{content:'';width:18px;height:1px;background:var(--accent);display:block}
+    .h-h1{font-family:var(--fd);font-size:clamp(2.1rem,5vw,3.75rem);line-height:1.07;letter-spacing:-.03em;color:var(--text-1);margin-bottom:1.35rem;opacity:0;transform:translateY(18px)}
+    .h-h1 em{font-style:italic;color:var(--accent)}
+    .h-tags{display:flex;flex-wrap:wrap;gap:.4rem 1rem;font-size:.875rem;color:var(--text-2);margin-bottom:2rem;opacity:0;transform:translateY(12px)}
+    .h-tags span{display:flex;align-items:center;gap:.35rem}
+    .h-tags span::before{content:'·';color:var(--accent)}
+    .h-tags span:first-child::before{display:none}
+    .h-acts{display:flex;flex-wrap:wrap;gap:.75rem;opacity:0;transform:translateY(12px)}
+
+    /* FOTO DO HERO — círculo razão áurea */
+    .hero-photo-col{display:flex;align-items:center;justify-content:flex-end}
+    .hero-photo{
+      width:320px;height:320px;
+      border-radius:50%;
+      object-fit:cover;object-position:top center;
+      box-shadow:0 24px 64px rgba(0,0,0,.13),0 8px 24px rgba(0,0,0,.08);
+      opacity:0;
+      transition:opacity .8s var(--ease),transform .8s var(--ease);
+      transform:translateY(16px) scale(.97);
+    }
+    .hero-photo.loaded{opacity:1;transform:none}
+
+    /* SOBRE */
+    .sobre-grid{display:grid;grid-template-columns:1fr;gap:2rem;align-items:start;margin-top:2.75rem}
+    .bio{font-size:1.05rem;color:var(--text-2);line-height:1.8;margin-bottom:2.25rem}
+    .bio strong{color:var(--text-1);font-weight:500}
+    .principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-bottom:2rem}
+    .pc{background:var(--bg-card);border-radius:10px;padding:1.125rem;box-shadow:var(--sh-sm);border:1px solid var(--border);transition:box-shadow .25s,transform .25s var(--ease)}
+    .pc:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+    .pc-n{font-size:.575rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.35rem}
+    .pc-t{font-size:.875rem;font-weight:600;color:var(--text-1);margin-bottom:.25rem;line-height:1.3}
+    .pc-d{font-size:.775rem;color:var(--text-3);line-height:1.55}
+    .skills{display:flex;flex-wrap:wrap;gap:.4rem}
+    .skill{font-size:.7rem;font-weight:500;color:var(--text-2);background:var(--bg-card);border:1px solid var(--border);padding:.25rem .65rem;border-radius:100px;box-shadow:var(--sh-sm);transition:border-color .2s,color .2s}
+    .skill:hover{border-color:var(--border-hi);color:var(--accent)}
+    .photo-wrap{position:relative}
+    .photo-frame{width:100%;aspect-ratio:3/4;border-radius:16px;overflow:hidden;box-shadow:var(--sh-lg)}
+    .photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top}
+    .photo-border{position:absolute;inset:16px -16px -16px 16px;border:1px solid var(--border-hi);border-radius:16px;z-index:-1;pointer-events:none}
+    .photo-fb{width:100%;aspect-ratio:3/4;border-radius:16px;background:var(--bg-1);border:1px dashed var(--border-hi);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:var(--text-3);font-size:.8125rem;text-align:center;padding:1rem}
+
+    /* CASES — SUPDIMA STYLE */
+    #cases{padding:6rem 0}
+    .cases-hdr{margin-bottom:2.5rem}
+    .cases-sub{font-size:.9375rem;color:var(--text-2);line-height:1.65;margin-top:.5rem;max-width:480px}
+
+    .case-row{display:grid;grid-template-columns:1fr 400px;gap:3rem;align-items:center;padding:2.75rem 0;border-top:1px solid var(--border);cursor:pointer;transition:background .25s,padding .25s,margin .25s,border-radius .25s}
+    .case-row:last-child{border-bottom:1px solid var(--border)}
+    .case-row:hover{background:var(--bg-1);margin:0 -1.5rem;padding-left:1.5rem;padding-right:1.5rem;border-radius:10px;border-color:transparent}
+    @media(max-width:860px){.case-row{grid-template-columns:1fr;gap:1.5rem}.case-img-wrap{display:none}}
+
+    .c-info{display:flex;flex-direction:column;gap:.875rem}
+    .c-num{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+    .c-title{font-family:var(--fd);font-size:clamp(1.3rem,2.4vw,1.8rem);line-height:1.15;letter-spacing:-.015em;color:var(--text-1)}
+    .c-meta{font-size:.8rem;color:var(--text-3);display:flex;flex-wrap:wrap;gap:.3rem .75rem;align-items:center}
+    .c-desc{font-size:.9rem;color:var(--text-2);line-height:1.7;max-width:500px}
+    .c-footer{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+    .c-result{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem .65rem;background:rgba(21,128,61,.07);border:1px solid rgba(21,128,61,.18);border-radius:6px}
+    .c-rlbl{font-size:.575rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+    .c-rval{font-size:.8rem;font-weight:500;color:var(--green)}
+
+    .case-img-wrap{border-radius:12px;overflow:hidden;box-shadow:var(--sh-md);height:220px;width:100%;display:block}
+    .case-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .4s var(--ease)}
+    .case-row:hover .case-img-wrap img{transform:scale(1.04)}
+    .case-img-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.1rem;color:rgba(255,255,255,.15)}
+
+    /* TIMELINE */
+    .tl-top-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;margin-bottom:3rem}
+    .timeline{padding-left:1.75rem;position:relative}
+    .timeline::before{content:'';position:absolute;left:0;top:10px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),rgba(196,30,58,.1) 70%,transparent)}
+    .tl-item{position:relative;padding-bottom:2.25rem}
+    .tl-item:last-child{padding-bottom:0}
+    .tl-dot{position:absolute;left:calc(-1.75rem - 4.5px);top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg-0);box-shadow:0 0 0 3px rgba(196,30,58,.15)}
+    .tl-top{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.2rem}
+    .tl-per{font-size:.6875rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3)}
+    .tl-badge{font-size:.55rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--green);background:rgba(21,128,61,.1);padding:.15rem .4rem;border-radius:4px}
+    .tl-header{display:flex;align-items:center;gap:.875rem;margin-bottom:.25rem}
+    .tl-logo{display:block;width:72px;height:22px;object-fit:contain;object-position:left center;filter:grayscale(40%);opacity:.7;transition:opacity .2s,filter .2s;flex-shrink:0}
+    .tl-item:hover .tl-logo{opacity:1;filter:none}
+    .tl-role{font-size:.9375rem;font-weight:600;color:var(--text-1)}
+    .tl-co{font-size:.85rem;color:var(--accent);margin-bottom:.35rem}
+    .tl-imp{font-size:.8rem;color:var(--text-2);line-height:1.6}
+    .edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.875rem;margin-top:1.25rem}
+    .edu-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;box-shadow:var(--sh-sm)}
+    .edu-type{font-size:.575rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.3rem}
+    .edu-t{font-size:.9rem;font-weight:600;color:var(--text-1);margin-bottom:.2rem;line-height:1.3}
+    .edu-i{font-size:.8rem;color:var(--text-2)}
+    .edu-y{font-size:.725rem;color:var(--text-3);margin-top:.4rem}
+
+    /* CONTATO */
+    .ct-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:3.5rem;margin-top:2.75rem}
+    @media(max-width:820px){.ct-grid{grid-template-columns:1fr}}
+    .ct-info h3{font-family:var(--fd);font-size:1.4rem;color:var(--text-1);margin-bottom:.75rem;letter-spacing:-.01em}
+    .ct-info p{font-size:.9375rem;color:var(--text-2);line-height:1.75;margin-bottom:1.75rem}
+    .c-links{display:flex;flex-direction:column;gap:.75rem}
+    .c-link{display:flex;align-items:center;gap:.75rem;font-size:.875rem;color:var(--text-2);transition:color .2s}
+    .c-link:hover{color:var(--text-1)}
+    .c-icon{width:36px;height:36px;flex-shrink:0;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.875rem;box-shadow:var(--sh-sm)}
+    .form{display:flex;flex-direction:column;gap:.85rem}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+    @media(max-width:480px){.form-row{grid-template-columns:1fr}}
+    .fg{display:flex;flex-direction:column;gap:.3rem}
+    .flbl{font-size:.625rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3)}
+    .fctrl{background:var(--bg-card);color:var(--text-1);border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-family:var(--fb);font-size:.9375rem;width:100%;outline:none;box-shadow:var(--sh-sm);transition:border-color .2s,box-shadow .2s}
+    .fctrl::placeholder{color:var(--text-3)}
+    .fctrl:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(196,30,58,.12)}
+    textarea.fctrl{resize:vertical;min-height:115px}
+    .fmsg{font-size:.85rem;padding:.65rem 1rem;border-radius:8px;display:none}
+    .fmsg.ok{display:block;background:rgba(21,128,61,.07);border:1px solid rgba(21,128,61,.25);color:var(--green)}
+    .fmsg.err{display:block;background:rgba(196,30,58,.07);border:1px solid rgba(196,30,58,.25);color:var(--accent)}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:1.75rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+    .fl{font-size:.8rem;color:var(--text-3)}
+    .fr{display:flex;gap:1.5rem}
+    .fr a{font-size:.8rem;color:var(--text-3);transition:color .2s}
+    .fr a:hover{color:var(--text-1)}
+
+    /* SCROLL TOP */
+    #topb{position:fixed;bottom:1.75rem;right:1.75rem;z-index:400;width:40px;height:40px;border-radius:50%;background:var(--bg-card);border:1px solid var(--border);color:var(--text-2);font-size:.9rem;box-shadow:var(--sh-md);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,border-color .2s,color .2s,transform .2s var(--ease)}
+    #topb.show{opacity:1;pointer-events:all}
+    #topb:hover{border-color:var(--border-hi);color:var(--accent);transform:translateY(-2px)}
+
+    /* ANIM */
+    .anim{opacity:0;transform:translateY(20px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+    .anim.in{opacity:1;transform:none}
+    :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<button id="topb" aria-label="Voltar ao topo" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">Simon Benlulu</a>
+  <div class="nav-r">
+    <ul class="nav-links" id="navL">
+      <li><a href="#sobre"     class="t" data-pt="Sobre"     data-en="About">Sobre</a></li>
+      <li><a href="#cases"     class="t" data-pt="Cases"     data-en="Cases">Cases</a></li>
+      <li><a href="#curriculo" class="t" data-pt="Currículo" data-en="Resume">Currículo</a></li>
+      <li><a href="#contato"   class="t" data-pt="Contato"   data-en="Contact">Contato</a></li>
+    </ul>
+    <div class="lang-sw">
+      <button class="lbtn on" onclick="setLang('pt')">PT</button>
+      <button class="lbtn"    onclick="setLang('en')">EN</button>
+    </div>
+    <button class="nav-mob" id="mobB" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid wrap">
+
+    <!-- COLUNA ESQUERDA — texto (62%) -->
+    <div class="h-inner">
+      <div class="h-name" id="hName">Simon Benlulu</div>
+      <div class="h-eye" id="hEye">
+        <span class="t" data-pt="Senior Product Designer" data-en="Senior Product Designer">Senior Product Designer</span>
+      </div>
+      <h1 class="h-h1" id="hH1">
+        <span class="t"
+          data-pt="Design que une <em>experiência humana</em> e valor para negócios."
+          data-en="Design that bridges <em>human experience</em> and business value.">
+          Design que une <em>experiência humana</em> e valor para negócios.
+        </span>
+      </h1>
+      <div class="h-tags" id="hTags">
+        <span class="t" data-pt="Discovery"      data-en="Discovery">Discovery</span>
+        <span class="t" data-pt="UX Research"    data-en="UX Research">UX Research</span>
+        <span class="t" data-pt="Service Design"  data-en="Service Design">Service Design</span>
+        <span class="t" data-pt="IA Driven"      data-en="AI Driven">IA Driven</span>
+        <span>Banking &amp; Fintech · 7+ anos</span>
+      </div>
+      <div class="h-acts" id="hActs">
+        <a href="#cases" class="btn btn-p"><span class="t" data-pt="Ver cases" data-en="View cases">Ver cases</span> →</a>
+        <a href="#contato" class="btn btn-g"><span class="t" data-pt="Falar comigo" data-en="Get in touch">Falar comigo</span></a>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA — foto (38%, proporção áurea) -->
+    <div class="hero-photo-col">
+      <img
+        id="hPhoto"
+        class="hero-photo"
+        src="./assets/images/simon.jpg/foto-profissional.png"
+        alt="Simon Benlulu — Senior Product Designer"
+      >
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOBRE -->
+<section class="section" id="sobre">
+  <div class="wrap">
+    <p class="eyebrow anim t" data-pt="Sobre mim" data-en="About me">Sobre mim</p>
+    <h2 class="sh2 anim t" data-pt="Do comportamento real ao produto certo." data-en="From real behavior to the right product.">Do comportamento real ao produto certo.</h2>
+    <div class="sobre-grid">
+      <div>
+        <p class="bio anim t"
+          data-pt="Minha trajetória começou muito conectada à <strong>pesquisa, dados e comportamento</strong>. Isso moldou a forma como penso produto até hoje.<br><br>Transitei entre pesquisa, product e service design, sempre com um olhar voltado para entender contexto e transformar isso em <strong>decisões mais estratégicas</strong>. Hoje atuo com clientes como <strong>Visa</strong> e <strong>Banco do Brasil</strong>, conectando research e visão sistêmica."
+          data-en="My journey started deeply connected to <strong>research, data, and behavior</strong>. That shaped how I think about product today.<br><br>I moved across research, product, and service design — always focused on understanding context and turning it into <strong>more strategic decisions</strong>. Today I work with clients like <strong>Visa</strong> and <strong>Banco do Brasil</strong>, connecting research and systemic thinking.">
+          Minha trajetória começou muito conectada à <strong>pesquisa, dados e comportamento</strong>. Isso moldou a forma como penso produto até hoje.<br><br>Transitei entre pesquisa, product e service design, sempre com um olhar voltado para entender contexto e transformar isso em <strong>decisões mais estratégicas</strong>. Hoje atuo com clientes como <strong>Visa</strong> e <strong>Banco do Brasil</strong>, conectando research e visão sistêmica.
+        </p>
+        <div class="principles anim">
+          <div class="pc"><div class="pc-n">01</div><div class="pc-t t" data-pt="Pesquisa antes de solução" data-en="Research before solution">Pesquisa antes de solução</div><div class="pc-d t" data-pt="A maioria dos erros de produto começa antes do design. Começo sempre investigando o contexto, não propondo resposta." data-en="Most product mistakes happen before design starts. I always begin by investigating context, not proposing answers.">A maioria dos erros de produto começa antes do design. Começo sempre investigando o contexto, não propondo resposta.</div></div>
+          <div class="pc"><div class="pc-n">02</div><div class="pc-t t" data-pt="Clareza em cenários complexos" data-en="Clarity in complex scenarios">Clareza em cenários complexos</div><div class="pc-d t" data-pt="A clareza não vem do problema — vem do processo. É o que acontece antes da solução que define a qualidade dela." data-en="Clarity doesn't come from the problem — it comes from the process. What happens before the solution defines its quality.">A clareza não vem do problema — vem do processo. É o que acontece antes da solução que define a qualidade dela.</div></div>
+          <div class="pc"><div class="pc-n">03</div><div class="pc-t t" data-pt="IA como acelerador" data-en="AI as accelerator">IA como acelerador</div><div class="pc-d t" data-pt="Uso IA para acelerar síntese, explorar hipóteses e conduzir experimentos, economizando tempo para curadoria, análise e decisões." data-en="I use AI to accelerate synthesis, explore hypotheses and run experiments — saving time for curation, analysis and decisions.">Uso IA para acelerar síntese, explorar hipóteses e conduzir experimentos, economizando tempo para curadoria, análise e decisões.</div></div>
+        </div>
+        <div class="skills anim">
+          <span class="skill">UX Research</span><span class="skill">Product Discovery</span><span class="skill">Service Design</span><span class="skill">IA Generativa</span><span class="skill">Figma</span><span class="skill">Service Blueprint</span><span class="skill">Testes de Usabilidade</span><span class="skill">NPS · CSAT · SUS</span><span class="skill">Design System</span><span class="skill">Prototipagem</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="wrap">
+    <div class="cases-hdr anim">
+      <p class="eyebrow t" data-pt="Projetos selecionados" data-en="Selected work">Projetos selecionados</p>
+      <h2 class="sh2 t" data-pt="Cases" data-en="Cases">Cases</h2>
+      <p class="cases-sub t"
+        data-pt="Discovery end-to-end, pesquisa estruturada e decisões orientadas a valor."
+        data-en="End-to-end discovery, structured research, and value-driven decisions.">
+        Discovery end-to-end, pesquisa estruturada e decisões orientadas a valor.
+      </p>
+    </div>
+
+    <div>
+      <!-- 01 -->
+      <div class="case-row anim" onclick="location.href='case-bv.html'">
+        <div class="c-info">
+          <div class="c-num">01</div>
+          <h3 class="c-title t" data-pt="Modernização do Dashboard de Operações Financeiras" data-en="Financial Operations Dashboard Modernisation">Modernização do Dashboard de Operações Financeiras</h3>
+          <div class="c-meta"><span>banco BV</span><span>·</span><span>Product Discovery · Dashboard Strategy</span><span>·</span><span>2024–2026</span></div>
+          <p class="c-desc t"
+            data-pt="Reestruturação do dashboard estratégico da plataforma de Antecipações de Recebíveis, usada por 6 áreas do banco e mais de 10 times internos de produto. Menos carga cognitiva, decisões mais rápidas e operações sem fricção."
+            data-en="Redesign of the strategic dashboard for the Receivables Anticipation platform, used by 6 bank areas and over 10 internal product teams. Less cognitive load, faster decisions, frictionless operations.">
+            Reestruturação do dashboard estratégico da plataforma de Antecipações de Recebíveis, usada por 6 áreas do banco e mais de 10 times internos de produto. Menos carga cognitiva, decisões mais rápidas e operações sem fricção.
+          </p>
+          <div class="c-footer">
+            <div class="c-result"><span class="c-rlbl t" data-pt="Resultado" data-en="Result">Resultado</span><span class="c-rval t" data-pt="↓ Carga cognitiva · ↑ Velocidade de decisão · 6 times" data-en="↓ Cognitive load · ↑ Decision speed · 6 teams">↓ Carga cognitiva · ↑ Velocidade de decisão · 6 times</span></div>
+            <a href="case-bv.html" class="btn btn-g btn-sm" onclick="event.stopPropagation()"><span class="t" data-pt="Ver case" data-en="View case">Ver case</span> →</a>
+          </div>
+        </div>
+        <div class="case-img-wrap">
+          <img src="./assets/images/bv/cover-modernizacao-dash.png" alt="Dashboard de Operações Financeiras — banco BV" onerror="this.parentElement.style.background='linear-gradient(135deg,#f0ede7,#e5e0d8)'">
+        </div>
+      </div>
+
+      <!-- 02 -->
+      <div class="case-row anim" onclick="location.href='case-central-notificacoes.html'">
+        <div class="c-info">
+          <div class="c-num">02</div>
+          <h3 class="c-title t" data-pt="Central de Notificações — Bankline" data-en="Notification Center — Bankline">Central de Notificações — Bankline</h3>
+          <div class="c-meta"><span>Itaú BBA</span><span>·</span><span>Discovery · UX Research</span><span>·</span><span>2023–2024</span></div>
+          <p class="c-desc t"
+            data-pt="O Itaú BBA é o maior e mais rentável banco de investimento da América Latina. Projetei a Central de Notificações do Bankline — unificando comunicações críticas dispersas em múltiplos canais numa única experiência que elimina falhas com impacto financeiro direto nos maiores grupos empresariais do Brasil."
+            data-en="Itaú BBA is Latin America's largest and most profitable investment bank. I designed the Bankline Notification Center — consolidating critical communications scattered across multiple channels into one experience that eliminates failures with direct financial impact on Brazil's largest corporate groups.">
+            O Itaú BBA é o maior e mais rentável banco de investimento da América Latina. Projetei a Central de Notificações do Bankline — unificando comunicações críticas dispersas em múltiplos canais numa única experiência que elimina falhas com impacto financeiro direto nos maiores grupos empresariais do Brasil.
+          </p>
+          <div class="c-footer">
+            <div class="c-result"><span class="c-rlbl t" data-pt="Resultado" data-en="Result">Resultado</span><span class="c-rval t" data-pt="Base escalável · Redução de ruído cognitivo" data-en="Scalable foundation · Reduced cognitive noise">Base escalável · Redução de ruído cognitivo</span></div>
+            <a href="case-central-notificacoes.html" class="btn btn-g btn-sm" onclick="event.stopPropagation()"><span class="t" data-pt="Ver case" data-en="View case">Ver case</span> →</a>
+          </div>
+        </div>
+        <div class="case-img-wrap">
+          <img src="./assets/images/itau/cover-central-notf-itau-extra.png" alt="Central de Notificações — Itaú BBA" onerror="this.parentElement.style.background='linear-gradient(135deg,#f5f0ea,#e8e2d8)'">
+        </div>
+      </div>
+
+      <!-- 02 -->
+      <div class="case-row anim" onclick="location.href='case-lacrei.html'">
+        <div class="c-info">
+          <div class="c-num">03</div>
+          <h3 class="c-title t" data-pt="Design System — Lacrei Saúde" data-en="Design System — Lacrei Health">Design System — Lacrei Saúde</h3>
+          <div class="c-meta"><span>Lacrei</span><span>·</span><span>Design System · Acessibilidade</span><span>·</span><span>2021–2022</span></div>
+          <p class="c-desc t"
+            data-pt="Primeiro Design System de uma plataforma de saúde inclusiva para a comunidade LGBTQIA+. Pesquisa com usuários, acessibilidade WCAG e impacto social como parte central do processo."
+            data-en="First Design System for an LGBTQIA+-inclusive health platform. User research, WCAG accessibility, and social impact as central to the process.">
+            Primeiro Design System de uma plataforma de saúde inclusiva para a comunidade LGBTQIA+. Pesquisa com usuários, acessibilidade WCAG e impacto social como parte central do processo.
+          </p>
+          <div class="c-footer">
+            <div class="c-result"><span class="c-rlbl t" data-pt="Resultado" data-en="Result">Resultado</span><span class="c-rval t" data-pt="DS robusto · WCAG AA · Consistência + Inclusão" data-en="Robust DS · WCAG AA · Consistency + Inclusion">DS robusto · WCAG AA · Consistência + Inclusão</span></div>
+            <a href="case-lacrei.html" class="btn btn-g btn-sm" onclick="event.stopPropagation()"><span class="t" data-pt="Ver case" data-en="View case">Ver case</span> →</a>
+          </div>
+        </div>
+        <div class="case-img-wrap">
+          <img src="./assets/images/imagens-case-ds-lacrei/cover.png" alt="Marsha Design System — Lacrei Saúde" onerror="this.parentElement.style.background='linear-gradient(135deg,#e8e4f0,#d4cce8)'">
+        </div>
+      </div>
+
+      <!-- 03 -->
+      <div class="case-row anim" onclick="location.href='case-visa.html'">
+        <div class="c-info">
+          <div class="c-num">04</div>
+          <h3 class="c-title t" data-pt="Conformidade Regulatória — Visa" data-en="Regulatory Compliance — Visa">Conformidade Regulatória — Visa</h3>
+          <div class="c-meta"><span>Visa</span><span>·</span><span>Service Design · Regulatório</span><span>·</span><span>2026</span></div>
+          <p class="c-desc t"
+            data-pt="Discovery end-to-end em jornadas críticas de conformidade regulatória. Service Blueprints para tornar visível a complexidade sistêmica e alinhar compliance, ops, tech e negócio."
+            data-en="End-to-end discovery for critical regulatory compliance journeys. Service Blueprints to expose systemic complexity and align compliance, ops, tech, and business.">
+            Discovery end-to-end em jornadas críticas de conformidade regulatória. Service Blueprints para tornar visível a complexidade sistêmica e alinhar compliance, ops, tech e negócio.
+          </p>
+          <div class="c-footer">
+            <div class="c-result"><span class="c-rlbl t" data-pt="Resultado" data-en="Result">Resultado</span><span class="c-rval t" data-pt="Alinhamento em 1 mês vs. 2–3 trimestres" data-en="Alignment in 1 month vs. 2–3 quarters">Alinhamento em 1 mês vs. 2–3 trimestres</span></div>
+            <a href="case-visa.html" class="btn btn-g btn-sm" onclick="event.stopPropagation()"><span class="t" data-pt="Ver case" data-en="View case">Ver case</span> →</a>
+          </div>
+        </div>
+        <div class="case-img-wrap">
+          <img src="./assets/images/visa/cover-visa-bb.png" alt="Conformidade Regulatória — Visa × Banco do Brasil" onerror="this.parentElement.style.background='linear-gradient(135deg,#dde8f5,#c8dcf0)'">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CURRÍCULO -->
+<section class="section" id="curriculo">
+  <div class="wrap">
+    <div class="tl-top-row">
+      <div>
+        <p class="eyebrow t" data-pt="Trajetória" data-en="Experience">Trajetória</p>
+        <h2 class="sh2 t" data-pt="Experiências" data-en="Experience">Experiências</h2>
+      </div>
+      <a href="#" class="btn btn-g">↓ <span class="t" data-pt="Baixar CV" data-en="Download CV">Baixar CV</span></a>
+    </div>
+    <div class="timeline">
+      <div class="tl-item anim">
+        <div class="tl-dot"></div>
+        <div class="tl-top"><span class="tl-per">abr/2026 – atual</span><span class="tl-badge t" data-pt="atual" data-en="current">atual</span></div>
+        <div class="tl-header">
+          <img class="tl-logo" src="./assets/images/logos-empresas/logo-visa.png" alt="Visa" onerror="this.style.display='none'">
+          <div class="tl-role t" data-pt="Product Researcher &amp; Service Designer Sr" data-en="Sr Product Researcher &amp; Service Designer">Product Researcher &amp; Service Designer Sr</div>
+        </div>
+        <div class="tl-co">Visa</div>
+        <div class="tl-imp t" data-pt="Discovery end-to-end em conformidade regulatória. Alinhamento de stakeholders em 1 mês — processo que normalmente leva 2–3 trimestres." data-en="End-to-end discovery in regulatory compliance. Stakeholder alignment in 1 month vs. the typical 2–3 quarters.">Discovery end-to-end em conformidade regulatória. Alinhamento de stakeholders em 1 mês — processo que normalmente leva 2–3 trimestres.</div>
+      </div>
+      <div class="tl-item anim">
+        <div class="tl-dot"></div>
+        <div class="tl-top"><span class="tl-per">jun/2024 – fev/2026</span></div>
+        <div class="tl-header">
+          <img class="tl-logo" src="./assets/images/logos-empresas/logo-bv.png" alt="banco BV" onerror="this.style.display='none'">
+          <div class="tl-role t" data-pt="Product Designer Sr" data-en="Sr Product Designer">Product Designer Sr</div>
+        </div>
+        <div class="tl-co">banco BV</div>
+        <div class="tl-imp t" data-pt="Discovery contínuo e product strategy para produtos escaláveis. IA generativa para síntese de pesquisa sem perder nuance qualitativa. KPIs: NPS, CSAT, SUS." data-en="Continuous discovery and product strategy for scalable products. Generative AI for research synthesis without losing qualitative nuance. KPIs: NPS, CSAT, SUS.">Discovery contínuo e product strategy para produtos escaláveis. IA generativa para síntese de pesquisa sem perder nuance qualitativa. KPIs: NPS, CSAT, SUS.</div>
+      </div>
+      <div class="tl-item anim">
+        <div class="tl-dot"></div>
+        <div class="tl-top"><span class="tl-per">fev/2023 – abr/2024</span></div>
+        <div class="tl-header">
+          <img class="tl-logo" src="./assets/images/logos-empresas/logo-itau.png" alt="Itaú Unibanco" onerror="this.style.display='none'">
+          <div class="tl-role t" data-pt="Product Designer Pl" data-en="Product Designer">Product Designer Pl</div>
+        </div>
+        <div class="tl-co">Itaú Unibanco</div>
+        <div class="tl-imp t" data-pt="Redesign de jornadas core mobile + desktop para centenas de milhares de usuários. Central de Notificações — Bankline. Validado com CSAT, NPS, SUM, CES." data-en="Core mobile + desktop journey redesign for hundreds of thousands of users. Notification Center — Bankline. Validated with CSAT, NPS, SUM, CES.">Redesign de jornadas core mobile + desktop para centenas de milhares de usuários. Central de Notificações — Bankline. Validado com CSAT, NPS, SUM, CES.</div>
+      </div>
+      <div class="tl-item anim">
+        <div class="tl-dot"></div>
+        <div class="tl-top"><span class="tl-per">jul/2021 – mar/2023</span></div>
+        <div class="tl-header">
+          <img class="tl-logo" src="./assets/images/logos-empresas/logo-brq.png" alt="BRQ Digital Solutions" onerror="this.style.display='none'">
+          <div class="tl-role t" data-pt="Product / CX Designer" data-en="Product / CX Designer">Product / CX Designer</div>
+        </div>
+        <div class="tl-co">BRQ Digital Solutions</div>
+        <div class="tl-imp t" data-pt="Discovery alinhado à estratégia de negócios. Testes A/B e usabilidade com métricas KLM e SUM." data-en="Discovery aligned with business strategy. A/B and usability tests with KLM and SUM metrics.">Discovery alinhado à estratégia de negócios. Testes A/B e usabilidade com métricas KLM e SUM.</div>
+      </div>
+      <div class="tl-item anim">
+        <div class="tl-dot"></div>
+        <div class="tl-top"><span class="tl-per">jul/2021 – jun/2022</span></div>
+        <div class="tl-header">
+          <img class="tl-logo" src="./assets/images/logos-empresas/logo-lacrei.jpg" alt="Lacrei" onerror="this.style.display='none'">
+          <div class="tl-role t" data-pt="UX/UI Designer | Design Systems" data-en="UX/UI Designer | Design Systems">UX/UI Designer | Design Systems</div>
+        </div>
+        <div class="tl-co">Lacrei <span style="color:var(--text-3);font-size:.7rem;margin-left:.35rem">(meio período)</span></div>
+        <div class="tl-imp t" data-pt="Primeiro Design System da plataforma. Pesquisa com comunidade LGBTQIA+. Acessibilidade WCAG." data-en="First platform Design System. Research with LGBTQIA+ community. WCAG accessibility.">Primeiro Design System da plataforma. Pesquisa com comunidade LGBTQIA+. Acessibilidade WCAG.</div>
+      </div>
+      <div class="tl-item anim">
+        <div class="tl-dot"></div>
+        <div class="tl-top"><span class="tl-per">nov/2020 – abr/2021</span></div>
+        <div class="tl-header">
+          <img class="tl-logo" src="./assets/images/logos-empresas/logo-class.png" alt="Class Solutions" onerror="this.style.display='none'">
+          <div class="tl-role t" data-pt="UI/UX Designer" data-en="UI/UX Designer">UI/UX Designer</div>
+        </div>
+        <div class="tl-co">Class Solutions</div>
+        <div class="tl-imp t" data-pt="Entrevistas, testes de usabilidade e wireframes orientados a metas de negócio." data-en="Interviews, usability tests, and wireframes aligned with business goals.">Entrevistas, testes de usabilidade e wireframes orientados a metas de negócio.</div>
+      </div>
+    </div>
+    <div style="margin-top:3.5rem;padding-top:3rem;border-top:1px solid var(--border)">
+      <p class="eyebrow t" data-pt="Formação" data-en="Education">Formação</p>
+      <div class="edu-grid">
+        <div class="edu-card anim"><div class="edu-type t" data-pt="Especialização" data-en="Specialization">Especialização</div><div class="edu-t">User Experience Design and Beyond</div><div class="edu-i">PUCRS</div><div class="edu-y">2021 – 2022</div></div>
+        <div class="edu-card anim"><div class="edu-type t" data-pt="Bacharelado" data-en="Bachelor's">Bacharelado</div><div class="edu-t t" data-pt="Artes Visuais" data-en="Visual Arts">Artes Visuais</div><div class="edu-i">Belas Artes São Paulo</div><div class="edu-y">2016 – 2020</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTATO -->
+<section class="section section-alt" id="contato">
+  <div class="wrap">
+    <p class="eyebrow t" data-pt="Contato" data-en="Contact">Contato</p>
+    <h2 class="sh2 t" data-pt="Vamos construir algo relevante." data-en="Let's build something meaningful.">Vamos construir algo relevante.</h2>
+    <div class="ct-grid">
+      <div class="ct-info anim">
+        <h3 class="t" data-pt="Disponível para novas conversas" data-en="Open to new conversations">Disponível para novas conversas</h3>
+        <p class="t"
+          data-pt="Busco posições onde design vá além da execução visual — discovery, estratégia, impacto de negócio. Fintechs, startups ou grandes empresas: o que importa é a profundidade do trabalho e valor entregue."
+          data-en="Looking for roles where design goes beyond visual execution — discovery, strategy, business impact. Fintechs, startups or large companies: what matters is depth of work and value delivered.">
+          Busco posições onde design vá além da execução visual — discovery, estratégia, impacto de negócio. Fintechs, startups ou grandes empresas: o que importa é a profundidade do trabalho e valor entregue.
+        </p>
+        <div class="c-links">
+          <a href="mailto:simonjvieira@gmail.com" class="c-link"><div class="c-icon">✉</div><span>simonjvieira@gmail.com</span></a>
+          <a href="https://www.linkedin.com/in/simonbenlulu/" target="_blank" rel="noopener" class="c-link"><div class="c-icon">in</div><span>linkedin.com/in/simonbenlulu</span></a>
+          <a href="tel:+5511935856778" class="c-link"><div class="c-icon">☎</div><span>+55 (11) 93585-6778</span></a>
+          <div class="c-link"><div class="c-icon">📍</div><span class="t" data-pt="Florianópolis, SC" data-en="Florianópolis, SC">Florianópolis, SC</span></div>
+        </div>
+      </div>
+      <form class="form anim" id="form" action="https://formspree.io/f/maqvznob" method="POST">
+        <div class="form-row">
+          <div class="fg"><label class="flbl t" for="fn" data-pt="Nome" data-en="Name">Nome</label><input class="fctrl" type="text" id="fn" name="name" placeholder="Seu nome" required autocomplete="name"></div>
+          <div class="fg"><label class="flbl t" for="fe" data-pt="E-mail" data-en="Email">E-mail</label><input class="fctrl" type="email" id="fe" name="email" placeholder="seu@email.com" required autocomplete="email"></div>
+        </div>
+        <div class="fg"><label class="flbl t" for="fm" data-pt="Mensagem" data-en="Message">Mensagem</label><textarea class="fctrl" id="fm" name="message" rows="5" placeholder="Sobre qual projeto ou posição você quer conversar?" required></textarea></div>
+        <button type="submit" class="btn btn-p" id="fBtn"><span class="t" data-pt="Enviar mensagem" data-en="Send message">Enviar mensagem</span> →</button>
+        <div class="fmsg" id="fMsg"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">Feito com intenção por Simon Benlulu · 2025</div>
+  <div class="fr">
+    <a href="https://www.linkedin.com/in/simonbenlulu/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:simonjvieira@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+
+/* NAV */
+const nav=document.getElementById('nav'),topb=document.getElementById('topb');
+window.addEventListener('scroll',()=>{nav.classList.toggle('stuck',scrollY>40);topb.classList.toggle('show',scrollY>500)});
+const mobB=document.getElementById('mobB'),navL=document.getElementById('navL');
+mobB.addEventListener('click',()=>{const o=navL.classList.toggle('open');mobB.textContent=o?'✕':'☰'});
+navL.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{navL.classList.remove('open');mobB.textContent='☰'}));
+
+/* HERO ANIM */
+[{id:'hName',d:150},{id:'hEye',d:280},{id:'hH1',d:420},{id:'hTags',d:570},{id:'hActs',d:700}].forEach(({id,d})=>{
+  setTimeout(()=>{const el=document.getElementById(id);if(!el)return;el.style.transition='opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1)';el.style.opacity='1';el.style.transform='translateY(0)'},d)
+});
+/* FOTO HERO */
+setTimeout(()=>{
+  const p=document.getElementById('hPhoto');
+  if(p)p.classList.add('loaded');
+},500);
+
+/* SCROLL REVEAL */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.anim').forEach(el=>io.observe(el));
+document.querySelectorAll('.tl-item').forEach((el,i)=>el.style.transitionDelay=(i*65)+'ms');
+document.querySelectorAll('.case-row').forEach((el,i)=>el.style.transitionDelay=(i*80)+'ms');
+
+/* PHOTO FALLBACK */
+document.getElementById('pImg').addEventListener('error',()=>{
+  document.getElementById('pFrame').innerHTML='<div class="photo-fb"><span style="font-size:2rem">🖼</span><span>Salve a foto em<br><code style="font-size:.75rem">assets/images/simon.jpg</code></span></div>'
+});
+
+
+/* LANG */
+let lang='pt';
+function setLang(l){
+  lang=l;document.documentElement.lang=l==='pt'?'pt-BR':'en';
+  document.querySelectorAll('.lbtn').forEach((b,i)=>b.classList.toggle('on',(i===0&&l==='pt')||(i===1&&l==='en')));
+  document.querySelectorAll('.t[data-'+l+']').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
+  const pp=['Seu nome','seu@email.com','Sobre qual projeto ou posição você quer conversar?'],pe=['Your name','your@email.com','What project or position would you like to discuss?'];
+  document.querySelectorAll('.fctrl').forEach((c,i)=>{if((l==='pt'?pp:pe)[i])c.placeholder=(l==='pt'?pp:pe)[i]});
+}
+
+/* FORM */
+const form=document.getElementById('form'),fBtn=document.getElementById('fBtn'),fMsg=document.getElementById('fMsg');
+form.addEventListener('submit',async e=>{
+  e.preventDefault();fBtn.disabled=true;fBtn.innerHTML='<span>Enviando…</span>';fMsg.className='fmsg';
+  try{
+    const r=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+    if(!r.ok)throw 0;
+    fMsg.className='fmsg ok';fMsg.textContent=lang==='pt'?'✓ Mensagem enviada! Responderei em breve.':"✓ Message sent! I'll be in touch soon.";form.reset();
+  }catch{fMsg.className='fmsg err';fMsg.textContent=lang==='pt'?'✗ Erro ao enviar. Tente pelo e-mail diretamente.':"✗ Error sending. Try emailing directly."}
+  fBtn.disabled=false;fBtn.innerHTML=`<span>${lang==='pt'?'Enviar mensagem':'Send message'}</span> →`;
+});
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}}));
+</script>
+</body>
+</html>

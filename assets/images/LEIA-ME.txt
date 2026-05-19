@@ -1,0 +1,2 @@
+Salve a foto do Simon nesta pasta com o nome: simon.jpg
+O site irá carregar automaticamente de: ./assets/images/simon.jpg
