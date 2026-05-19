@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PJUS × BRQ — Jornada de Precatórios · Simon Benlulu</title>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6V8Q8Z7C33"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-6V8Q8Z7C33');</script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236D1717'/><text x='50%' y='54%' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='14' font-weight='700' fill='white'>SB</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F8F6F2;--bg-1:#F0EDE7;--card:#FFFFFF;
+      --t1:#0E0D0B;--t2:#494743;--t3:#9A9790;
+      --red:#6D1717;--red-dim:rgba(109,23,23,.07);--red-b:rgba(109,23,23,.2);
+      --green:#15803D;--green-dim:rgba(21,128,61,.07);--green-b:rgba(21,128,61,.2);
+      --amber:#b45309;--amber-dim:rgba(180,83,9,.08);--amber-b:rgba(180,83,9,.2);
+      --blue:#1d4ed8;--blue-dim:rgba(29,78,216,.07);
+      --border:rgba(14,13,11,.09);
+      --sh:0 1px 3px rgba(0,0,0,.05);--sh-md:0 4px 16px rgba(0,0,0,.08);
+      --fd:'DM Serif Display',Georgia,serif;--fb:'Inter',system-ui,sans-serif;
+      --ease:cubic-bezier(.16,1,.3,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--t1);font-family:var(--fb);line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+    .wrap{width:100%;max-width:1060px;margin:0 auto;padding:0 2rem}
+    .divider{height:1px;background:var(--border)}
+
+    /* NAV */
+    #nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent;transition:background .3s,border-color .3s,backdrop-filter .3s}
+    #nav.stuck{background:rgba(248,246,242,.9);backdrop-filter:blur(16px);border-color:var(--border)}
+    .nav-logo{font-family:var(--fd);font-size:.9375rem;color:var(--t1)}
+    .nav-back{display:flex;align-items:center;gap:.375rem;font-size:.8125rem;font-weight:500;color:var(--t2);transition:color .2s}
+    .nav-back:hover{color:var(--t1)}
+
+    /* HERO */
+    .case-hero{padding:7.5rem 0 4rem;border-bottom:1px solid var(--border)}
+    .tag-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem}
+    .tag{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border-radius:4px}
+    .tag-r{color:var(--red);background:var(--red-dim)}
+    .tag-m{color:var(--t3);background:rgba(14,13,11,.05)}
+    .case-title{font-family:var(--fd);font-size:clamp(2.25rem,5.5vw,4rem);line-height:1.05;letter-spacing:-.03em;color:var(--t1);margin-bottom:.375rem}
+    .case-subtitle{font-size:1.125rem;color:var(--t2);margin-bottom:2rem;font-weight:300}
+
+    /* COVER */
+    .cover-wrap{margin:0 auto 2.5rem;max-width:520px;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.08);border:1px solid var(--border)}
+    .cover-wrap img{width:100%;display:block;height:auto}
+
+    /* METRICS */
+    .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+    @media(max-width:600px){.metrics{grid-template-columns:1fr}}
+    .metric{background:var(--bg);padding:2rem 1.75rem;display:flex;flex-direction:column;gap:.375rem}
+    .metric-val{font-family:var(--fd);font-size:clamp(2rem,4vw,2.75rem);line-height:1;letter-spacing:-.03em;color:var(--red)}
+    .metric-lbl{font-size:.8125rem;color:var(--t2);line-height:1.5}
+
+    /* SECTIONS */
+    .section{padding:4rem 0}
+    .sec-label{font-size:.575rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:2rem;display:flex;align-items:center;gap:.5rem}
+    .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+    /* OVERVIEW */
+    .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border)}
+    @media(max-width:720px){.overview-grid{grid-template-columns:1fr}}
+    .overview-col{background:var(--bg);padding:2rem 1.75rem}
+    .ov-label{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.875rem}
+    .ov-title{font-family:var(--fd);font-size:1.125rem;color:var(--t1);margin-bottom:.625rem;letter-spacing:-.01em}
+    .ov-text{font-size:.875rem;color:var(--t2);line-height:1.75}
+    .ov-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+    .ov-list li{display:flex;align-items:flex-start;gap:.5rem;font-size:.875rem;color:var(--t2);line-height:1.55}
+    .ov-list li::before{content:'→';color:var(--red);flex-shrink:0;font-size:.8rem;margin-top:.05rem}
+
+    /* TEAM */
+    .team-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:0;background:var(--border)}
+    .team-cell{background:var(--bg-1);padding:1.5rem 1.75rem}
+    .tc-label{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:.5rem}
+    .tc-val{font-size:.875rem;font-weight:500;color:var(--t1);line-height:1.5}
+    .tc-val-sm{font-size:.8rem;color:var(--t2);line-height:1.6}
+
+    /* PROCESS PHASES */
+    .phases{display:flex;flex-direction:column}
+    .phase{border:1px solid var(--border);border-bottom:none}
+    .phase:last-child{border-bottom:1px solid var(--border)}
+    .phase-header{display:flex;align-items:center;gap:1.25rem;padding:1.5rem 1.75rem;background:var(--bg)}
+    .phase-num{font-size:.575rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+    .phase-name{font-family:var(--fd);font-size:1.125rem;color:var(--t1);letter-spacing:-.01em}
+    .phase-body{padding:0 1.75rem 1.75rem}
+    .phase-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
+    @media(max-width:560px){.phase-grid{grid-template-columns:1fr}}
+    .phase-item{display:flex;flex-direction:column;gap:.2rem;padding:.75rem 1rem;background:var(--bg-1);border-radius:6px}
+    .pi-type{font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+    .pi-desc{font-size:.8125rem;color:var(--t2);line-height:1.45}
+
+    /* QUOTE CARDS */
+    .quotes-grid{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin:1.25rem 0}
+    @media(max-width:640px){.quotes-grid{grid-template-columns:1fr}}
+    .quote-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;display:flex;gap:.875rem;border-left:3px solid var(--red)}
+    .quote-bar{width:3px;border-radius:2px;background:var(--red);flex-shrink:0}
+    .quote-text{font-size:.875rem;font-style:italic;color:var(--t1);line-height:1.65;margin-bottom:.5rem}
+    .quote-attr{font-size:.675rem;font-weight:600;color:var(--t3);letter-spacing:.05em;text-transform:uppercase}
+    .quote-card-full{background:var(--card);border:1px solid var(--red-b);border-radius:10px;padding:1.375rem 1.5rem;margin:1rem 0;border-left:3px solid var(--red)}
+    .quote-full-text{font-size:1rem;font-style:italic;color:var(--t1);line-height:1.7;margin-bottom:.5rem}
+    .quote-full-attr{font-size:.7rem;font-weight:600;color:var(--t3);letter-spacing:.06em;text-transform:uppercase}
+
+    /* DATA TABLE */
+    .data-table{width:100%;border-collapse:collapse;margin:1rem 0;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+    .data-table th{font-size:.625rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);background:var(--bg-1);padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+    .data-table td{font-size:.8125rem;color:var(--t2);padding:.75rem 1rem;border-bottom:1px solid var(--border);line-height:1.4}
+    .data-table tr:last-child td{border-bottom:none}
+    .data-table .highlight{font-weight:700;color:var(--t1)}
+    .data-table .val-green{color:var(--green);font-weight:700}
+    .data-table .val-red{color:var(--red);font-weight:700}
+    .data-table .val-amber{color:var(--amber);font-weight:700}
+
+    /* NPS SPLIT */
+    .nps-split{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin:1rem 0}
+    @media(max-width:560px){.nps-split{grid-template-columns:1fr}}
+    .nps-card{background:var(--card);padding:1.5rem 1.25rem;text-align:center}
+    .nps-val{font-family:var(--fd);font-size:clamp(1.75rem,3.5vw,2.5rem);line-height:1;letter-spacing:-.03em;margin-bottom:.35rem}
+    .nps-val.positive{color:var(--green)}
+    .nps-val.negative{color:var(--red)}
+    .nps-val.neutral{color:var(--amber)}
+    .nps-lbl{font-size:.75rem;color:var(--t2);line-height:1.45}
+    .nps-sub{font-size:.675rem;color:var(--t3);margin-top:.25rem}
+
+    /* INSIGHT BOX */
+    .insight{background:var(--red-dim);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:1.125rem 1.375rem;margin:1.25rem 0}
+    .insight-lbl{font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:.35rem}
+    .insight-text{font-size:.9rem;color:var(--t2);line-height:1.7}
+    .insight-text strong{color:var(--t1);font-weight:500}
+    .insight-green{background:var(--green-dim);border-left-color:var(--green)}
+    .insight-green .insight-lbl{color:var(--green)}
+
+    /* CASE IMAGE */
+    .case-img-wrap{margin:1.5rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh-md)}
+    .case-img-wrap img{width:100%;display:block;height:auto}
+    .img-caption{font-size:.75rem;color:var(--t3);text-align:center;padding:.625rem 1rem;background:var(--bg-1);border-top:1px solid var(--border)}
+
+    /* OPORTUNIDADES */
+    .frentes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin:1rem 0}
+    @media(max-width:560px){.frentes-grid{grid-template-columns:1fr}}
+    .frente{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.125rem;border-top:3px solid var(--red)}
+    .frente-num{font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:.35rem}
+    .frente-name{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.375rem}
+    .frente-desc{font-size:.8rem;color:var(--t2);line-height:1.55}
+
+    /* ROADMAP */
+    .rmap{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:1rem 0}
+    .rmap-row{display:grid;grid-template-columns:80px 1fr;gap:0;border-bottom:1px solid var(--border)}
+    .rmap-row:last-child{border-bottom:none}
+    .rmap-q{background:var(--t1);color:#fff;padding:.875rem 1rem;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.875rem;letter-spacing:.02em}
+    .rmap-content{background:var(--bg);padding:.875rem 1.25rem}
+    .rmap-theme{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:.375rem}
+    .rmap-items{font-size:.8rem;color:var(--t2);line-height:1.6}
+
+    /* RESULTS GRID */
+    .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1rem 0}
+    @media(max-width:640px){.results-grid{grid-template-columns:1fr}}
+    .result-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.5rem 1.25rem}
+    .result-ico{font-size:1.375rem;margin-bottom:.625rem}
+    .result-title{font-size:.875rem;font-weight:600;color:var(--t1);margin-bottom:.375rem;line-height:1.3}
+    .result-desc{font-size:.8rem;color:var(--t2);line-height:1.55}
+
+    /* REFLEXÃO */
+    .reflection-list{display:flex;flex-direction:column;gap:1.25rem;margin:1.25rem 0}
+    .ref-item{display:flex;gap:1rem;align-items:flex-start;padding:1.25rem;background:var(--card);border:1px solid var(--border);border-radius:10px}
+    .ref-num{font-family:var(--fd);font-size:1.375rem;color:var(--red);line-height:1;flex-shrink:0;min-width:1.75rem}
+    .ref-body{}
+    .ref-title{font-size:.9375rem;font-weight:600;color:var(--t1);margin-bottom:.375rem}
+    .ref-text{font-size:.875rem;color:var(--t2);line-height:1.7}
+
+    /* CLOSING */
+    .closing{padding:5rem 0;text-align:center;border-top:1px solid var(--border)}
+    .closing-h{font-family:var(--fd);font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--t1);margin-bottom:1rem;letter-spacing:-.02em}
+    .closing-sub{font-size:1rem;color:var(--t2);margin-bottom:2.5rem}
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.4rem;border-radius:7px;font-size:.875rem;font-weight:600;border:none;cursor:pointer;transition:transform .18s var(--ease),box-shadow .2s,background .2s}
+    .btn:hover{transform:translateY(-1px)}
+    .btn-r{background:var(--red);color:#fff}
+    .btn-r:hover{background:#7E1C1C;box-shadow:0 8px 24px rgba(109,23,23,.2)}
+    .btn-g{background:transparent;color:var(--t2);border:1px solid var(--border)}
+    .btn-g:hover{border-color:rgba(14,13,11,.22);color:var(--t1)}
+    .case-nav-row{display:flex;justify-content:space-between;align-items:center;padding:2rem 0;flex-wrap:wrap;gap:1rem;border-top:1px solid var(--border)}
+    .case-nav-row a{display:flex;align-items:center;gap:.4rem;font-size:.875rem;font-weight:500;color:var(--t2);transition:color .2s}
+    .case-nav-row a:hover{color:var(--t1)}
+    footer{border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .fl{font-size:.8rem;color:var(--t3)}
+    .fr{display:flex;gap:1.5rem}
+    .fr a{font-size:.8rem;color:var(--t3);transition:color .2s}
+    .fr a:hover{color:var(--t1)}
+    .anim{opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+    .anim.in{opacity:1;transform:none}
+    :focus-visible{outline:2px solid var(--red);outline-offset:3px}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="./index.html" class="nav-logo">Simon Benlulu</a>
+  <a href="./index.html#cases" class="nav-back">← Todos os cases</a>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="case-hero">
+  <div class="wrap">
+    <div class="tag-row anim">
+      <span class="tag tag-r">PJUS</span>
+      <span class="tag tag-r">BRQ</span>
+      <span class="tag tag-m">UX Research</span>
+      <span class="tag tag-m">Service Design</span>
+      <span class="tag tag-m">Discovery</span>
+      <span class="tag tag-m">Jan–Mar 2026</span>
+    </div>
+    <h1 class="case-title anim">Redesenhando a jornada de venda<br>de precatórios da líder de mercado</h1>
+    <p class="case-subtitle anim">PJUS × BRQ — da perda de 50% dos clientes após a proposta a uma jornada orientada por confiança, previsibilidade e dados</p>
+
+    <div class="metrics anim">
+      <div class="metric">
+        <div class="metric-val">~50%</div>
+        <div class="metric-lbl">De abandono após a primeira proposta — o problema estrutural que motivou o projeto</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">40+</div>
+        <div class="metric-lbl">Stakeholders de Marketing, Comercial, Operação e Jurídico alinhados no workshop</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">Fase 2</div>
+        <div class="metric-lbl">Continuidade contratada para implementação com time dedicado de design, arquitetura e tecnologia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ OVERVIEW ═══════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Project Overview</div>
+    <div class="overview-grid anim">
+      <div class="overview-col">
+        <div class="ov-label">Situação (S)</div>
+        <div class="ov-title">Líder de mercado perdendo metade dos clientes em silêncio</div>
+        <p class="ov-text">A PJUS é a maior empresa do Brasil em antecipação de precatórios — +20 mil clientes, +R$3B investidos, parceria com XP Asset. O modelo de negócio funciona. O problema: ~50% dos clientes desistiam após receber a proposta, durante a análise jurídica de 15–20 dias, enquanto a concorrência operava em 5–7 dias.</p>
+      </div>
+      <div class="overview-col">
+        <div class="ov-label">Tarefa (T)</div>
+        <div class="ov-title">Discovery end-to-end com evidências, não com hipóteses</div>
+        <p class="ov-text">Pesquisa qualitativa (6 entrevistas profundidade), pesquisa quantitativa (50 respondentes), benchmark dos 4 principais concorrentes, workshop com 40+ stakeholders, jornada As Is com curva emocional, 4 personas comportamentais, jornada To Be e roadmap Q0–Q4 de implementação.</p>
+      </div>
+      <div class="overview-col">
+        <div class="ov-label">Resultado (R)</div>
+        <div class="ov-title">Da percepção fragmentada à visão única de funil</div>
+        <ul class="ov-list">
+          <li>4 áreas alinhadas em torno de uma narrativa única pela primeira vez</li>
+          <li>Mudança de framing: de "acelerar SLA" para "tornar o SLA previsível"</li>
+          <li>Roadmap priorizado com KPIs de acompanhamento definidos</li>
+          <li>Continuidade contratada para fase de implementação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ TEAM ═══════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Team</div>
+    <div class="team-strip anim">
+      <div class="team-cell">
+        <div class="tc-label">Meu papel</div>
+        <div class="tc-val">Designer</div>
+        <div class="tc-val-sm" style="margin-top:.3rem">Pesquisa · Service Design · Facilitação</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Equipe core</div>
+        <div class="tc-val-sm">Marcelo Feliciano (Design Lead) · Simon Benlulu (Designer) · Daniel Jesus (Digital Innovation) · Diego Dalmaso (Head of Strategy)</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Stakeholders PJUS</div>
+        <div class="tc-val-sm">Diretoria · Marketing · Comercial · Operação · Jurídico</div>
+      </div>
+      <div class="team-cell">
+        <div class="tc-label">Empresa executora</div>
+        <div class="tc-val">BRQ</div>
+        <div class="tc-val-sm" style="margin-top:.3rem">Jan – Mar / 2026 · 79p relatório · 41 slides</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ SITUAÇÃO — CONTEXTO ═══════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Situação</div>
+
+    <div class="anim" style="max-width:700px;margin-bottom:2rem">
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.8;margin-bottom:1rem">A PJUS opera em um mercado <strong style="color:var(--t1);font-weight:500">altamente sensível</strong> — precatórios envolvem patrimônio, urgência financeira, dívidas, tratamentos de saúde. O problema central não era capacidade técnica: a análise jurídica da PJUS é minuciosa, o funding com XP é sólido, o atendimento é humanizado.</p>
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.8">O problema era que toda essa sofisticação acontecia em uma <strong style="color:var(--t1);font-weight:500">caixa preta</strong> para o cliente. Durante os 15–20 dias de análise, o cliente entrava em vácuo informacional — e em uma transação patrimonial sensível, silêncio se converte rapidamente em percepção de risco e desconfiança.</p>
+    </div>
+
+    <div class="case-img-wrap anim">
+      <img loading="lazy" src="./assets/images/pjus/[INTERNO] Jornada As Is - MODELO DE NEGÓCIO.jpg" alt="Modelo de negócio da PJUS — originação, operação e funding">
+      <div class="img-caption">Modelo de negócio da PJUS — originação, análise jurídica, operação e funding via XP Asset</div>
+    </div>
+
+    <div class="anim" style="margin-top:2rem">
+      <div style="font-family:var(--fd);font-size:clamp(1.1rem,2vw,1.375rem);color:var(--t1);letter-spacing:-.015em;margin-bottom:.875rem">O paradoxo confirmado em números</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>Métrica</th><th>Valor</th><th>Contexto</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Perda de clientes após a primeira proposta</td><td class="val-red">~50%</td><td>SLA longo + falta de clareza no processo</td></tr>
+          <tr><td>Tempo de análise jurídica — PJUS</td><td class="val-amber">15–20 dias</td><td>Principal fator competitivo negativo</td></tr>
+          <tr><td>Tempo de análise — concorrentes</td><td class="val-green">5–7 dias</td><td>Players digitais com automação maior</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight anim">
+      <div class="insight-lbl">Hipótese central (Matriz CSD)</div>
+      <p class="insight-text"><strong>Certeza:</strong> algo no funil estava gerando perda de valor não rastreada. <strong>Suposição:</strong> a desconfiança surgia no SLA longo. <strong>Dúvida:</strong> o cliente saía por preço, por prazo, ou por falta de informação? A pesquisa respondeu — e a resposta mudou a direção do projeto.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ AÇÃO — PROCESSO ═══════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Processo — 5 etapas encadeadas ao longo de 3 meses</div>
+
+    <div class="phases anim">
+
+      <!-- 01. QUALITATIVA -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 01</span>
+          <span class="phase-name">Pesquisa Qualitativa — 6 entrevistas em profundidade</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">Amostra estruturada para comparação: <strong style="color:var(--t1)">3 promotores</strong> e <strong style="color:var(--t1)">3 detratores</strong> da PJUS. O objetivo não era validar percepções internas — era entender drivers de confiança, fatores de decisão e fricções críticas sob a ótica real do cliente.</p>
+
+          <div style="font-size:.675rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:.75rem">3 padrões estruturais identificados</div>
+          <div class="quotes-grid">
+            <div class="quote-card">
+              <div>
+                <p class="quote-text">"A gente fica com o pé atrás, né? É muito golpe que tem por aí."</p>
+                <p class="quote-text">"No começo eu achei que era conversa fiada, que era golpe."</p>
+                <div class="quote-attr">Padrão 1 — Confiança é o eixo decisório, antes do preço</div>
+              </div>
+            </div>
+            <div class="quote-card">
+              <div>
+                <p class="quote-text">"'Jogaram' os valores. Não explicaram os cálculos, só os números."</p>
+                <p class="quote-text">"Fiquei estranhando o valor que sobrou, parecia que o resto era tudo deles."</p>
+                <div class="quote-attr">Padrão 2 — Transparência financeira é o principal ponto de tensão</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quote-card-full">
+            <p class="quote-full-text">"Essa espera sem ninguém falar nada é o que mata a gente, você começa a achar que foi enganado."</p>
+            <p class="quote-full-text">"O silêncio deles é o que gera a desconfiança."</p>
+            <div class="quote-full-attr">Padrão 3 — A experiência emocional define se o cliente será promotor ou detrator. Quando há dúvida sobre valor ou prazo, todo o processo é questionado retroativamente.</div>
+          </div>
+
+          <div class="insight insight-green">
+            <div class="insight-lbl">Driver de promoção</div>
+            <p class="insight-text">A confiança não está ancorada na imagem da empresa — está em <strong>pessoas</strong>. "Lucas é gente boa demais... ele é o nosso contato." O momento do pagamento é um alívio emocional, não só financeiro. Quando bem conduzido, <strong>consolida a reputação da empresa</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02. QUANTITATIVA -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 02</span>
+          <span class="phase-name">Pesquisa Quantitativa — 50 respondentes, 5 achados estruturais</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">Amostra: 60% que venderam à PJUS e 40% que não concluíram. <strong style="color:var(--t1)">60% afirmaram ter conversado com outras empresas</strong> — evidenciando um ambiente competitivo real onde cada fricção tem custo.</p>
+
+          <div style="font-size:.675rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:.875rem 0 .625rem">Achado #1 — O paradoxo do NPS polarizado</div>
+          <div class="nps-split">
+            <div class="nps-card">
+              <div class="nps-val neutral">+35,3</div>
+              <div class="nps-lbl">NPS geral</div>
+              <div class="nps-sub">Médio que esconde a polarização</div>
+            </div>
+            <div class="nps-card" style="background:var(--green-dim)">
+              <div class="nps-val positive">+86</div>
+              <div class="nps-lbl">NPS de quem <strong>vendeu</strong></div>
+              <div class="nps-sub">Média 9,33 · Experiência muito boa</div>
+            </div>
+            <div class="nps-card" style="background:var(--red-dim)">
+              <div class="nps-val negative">−38,1</div>
+              <div class="nps-lbl">NPS de quem <strong>não vendeu</strong></div>
+              <div class="nps-sub">Média 5,9 · Claramente frustrante</div>
+            </div>
+          </div>
+          <div class="insight anim">
+            <div class="insight-lbl">Insight</div>
+            <p class="insight-text">A PJUS não gera experiência mediana. Gera experiências <strong>muito boas ou claramente frustrantes</strong> — dependendo de como o processo evolui. O NPS geral positivo escondia uma polarização aguda.</p>
+          </div>
+
+          <div style="font-size:.675rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:1.5rem 0 .625rem">Achado #2 — Continuidade do atendente é fator estrutural de conversão</div>
+          <table class="data-table">
+            <thead><tr><th></th><th>Vendeu para a PJUS</th><th>Não vendeu</th></tr></thead>
+            <tbody>
+              <tr><td>Confiaram desde o primeiro contato</td><td class="val-green">80%</td><td class="val-red">30%</td></tr>
+              <tr><td>Tiveram sempre o mesmo atendente</td><td class="val-green">90%</td><td class="val-amber">52%</td></tr>
+              <tr><td>Conversão (mesmo atendente vs. trocou)</td><td class="val-green highlight">71%</td><td class="val-red highlight">33%</td></tr>
+            </tbody>
+          </table>
+          <div class="insight">
+            <div class="insight-lbl">Insight estratégico</div>
+            <p class="insight-text">Clientes que mantiveram o <strong>mesmo negociador tiveram mais do que o dobro de chance de fechar</strong> (71% vs. 33%). Continuidade não é detalhe operacional — é um redutor de risco percebido. <strong>Trocar de negociador derruba conversão.</strong></p>
+          </div>
+
+          <div style="font-size:.675rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin:1.5rem 0 .625rem">Achado #3 — Previsibilidade do prazo importa mais que a duração</div>
+          <table class="data-table">
+            <thead><tr><th>Situação</th><th>NPS médio</th><th>Conversão</th></tr></thead>
+            <tbody>
+              <tr><td>Muito atraso, sem comunicação</td><td class="val-red">3,38</td><td class="val-red">0%</td></tr>
+              <tr><td>Pouco atraso</td><td class="val-amber">7,88</td><td class="val-amber">50%</td></tr>
+              <tr><td>Sem atraso, prazo claro</td><td class="val-green">8,97</td><td class="val-green">74%</td></tr>
+            </tbody>
+          </table>
+          <div class="insight insight-green">
+            <div class="insight-lbl">Insight-chave</div>
+            <p class="insight-text">O problema não é "demorar" — é <strong>não explicar e não atualizar</strong>. Quando o prazo é claro, mesmo sendo longo, tende a ser aceito. Quando é vago, ativa percepção de risco e leva o cliente a comparar com concorrentes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03. BENCHMARK -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 03</span>
+          <span class="phase-name">Benchmark Competitivo — Precato · BTG · emDia · Preks</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">Mapeamos 4 concorrentes em 4 dimensões: velocidade de resposta, clareza da proposta, suporte humano e capacidade para casos complexos.</p>
+          <table class="data-table">
+            <thead><tr><th>Padrão identificado</th><th>Quem usa</th><th>Trade-off</th></tr></thead>
+            <tbody>
+              <tr><td>Velocidade como argumento de aquisição</td><td>Players digitais retail</td><td>Gera desalinhamento de expectativa vs. entrega</td></tr>
+              <tr><td>Autoridade institucional como segurança</td><td>BTG Pactual</td><td>Atrai casos High Ticket, mas é burocrático</td></tr>
+              <tr><td>Automação alta, baixo suporte humano</td><td>Plataformas digitais puras</td><td>Eficiência operacional, mas menos percepção de segurança</td></tr>
+              <tr><td class="highlight">Falta de visibilidade durante análise</td><td class="val-red">Padrão em TODOS</td><td>Ansiedade e contato repetitivo com suporte</td></tr>
+            </tbody>
+          </table>
+          <div class="insight insight-green">
+            <div class="insight-lbl">Oportunidade identificada</div>
+            <p class="insight-text">A <strong>falta de visibilidade durante a análise</strong> é um problema estrutural de todo o mercado. A PJUS pode se diferenciar sendo a primeira a resolver esse gap — sem precisar competir em velocidade bruta com players que sacrificam rigor jurídico.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04. WORKSHOP -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 04</span>
+          <span class="phase-name">Workshop de Ideação — World Café com 40+ pessoas</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">Workshop interdisciplinar envolvendo Comercial, Operação, Marketing e Jurídico. A dinâmica <strong style="color:var(--t1)">World Café</strong> criou um ambiente onde áreas que normalmente não conversavam trocaram perspectivas sobre os mesmos processos.</p>
+
+          <div class="phase-grid" style="margin-bottom:1.25rem">
+            <div class="phase-item">
+              <span class="pi-type">Objetivo 1</span>
+              <span class="pi-desc">Compartilhar achados da pesquisa com as 4 áreas</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Objetivo 2</span>
+              <span class="pi-desc">Validar percepções internas sobre os pontos de fricção</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Objetivo 3</span>
+              <span class="pi-desc">Identificar oportunidades a partir da experiência atual</span>
+            </div>
+            <div class="phase-item">
+              <span class="pi-type">Objetivo 4</span>
+              <span class="pi-desc">Alinhar prioridades estratégicas com quem opera o dia a dia</span>
+            </div>
+          </div>
+
+          <div class="case-img-wrap">
+            <img loading="lazy" src="./assets/images/pjus/To Be _ Oportunidades - dinamica com time comercial.jpg" alt="Dinâmica de priorização com o time comercial da PJUS — 40+ pessoas">
+            <div class="img-caption">Dinâmica de priorização com o time comercial da PJUS — quem opera o dia a dia definindo o que resolve primeiro</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05. JORNADA AS IS -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 05</span>
+          <span class="phase-name">Jornada As Is — curva emocional e fricções críticas</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1rem">A jornada foi organizada em <strong style="color:var(--t1)">4 momentos</strong> e <strong style="color:var(--t1)">6 etapas operacionais</strong>. Dois vales críticos emergiram com clareza: Recebimento da Proposta e Análise Jurídica — exatamente onde a empresa "some" do ponto de vista do cliente.</p>
+
+          <div class="case-img-wrap">
+            <img loading="lazy" src="./assets/images/pjus/[INTERNO] Jornada As Is - JORNADA AS IS.jpg" alt="Jornada As Is — curva emocional e fricções críticas por etapa">
+            <div class="img-caption">Jornada As Is — curva emocional ao longo das 6 etapas, com mapeamento de fricções críticas por momento</div>
+          </div>
+
+          <div class="phase-grid" style="margin-top:1rem">
+            <div class="phase-item" style="border-left:3px solid var(--amber)">
+              <span class="pi-type">Fricção 1</span>
+              <span class="pi-desc">Baixa visibilidade do andamento — cliente sem clareza sobre status durante análise jurídica</span>
+            </div>
+            <div class="phase-item" style="border-left:3px solid var(--amber)">
+              <span class="pi-type">Fricção 2</span>
+              <span class="pi-desc">Dependência de contato com negociador — atualização só por interação humana, criando gargalo</span>
+            </div>
+            <div class="phase-item" style="border-left:3px solid var(--amber)">
+              <span class="pi-type">Fricção 3</span>
+              <span class="pi-desc">Complexidade linguística — jargão jurídico afasta o cliente da compreensão do processo</span>
+            </div>
+            <div class="phase-item" style="border-left:3px solid var(--amber)">
+              <span class="pi-type">Fricção 4</span>
+              <span class="pi-desc">Desalinhamento de expectativa — prazo prometido nem sempre cumprido, sem comunicação proativa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06. PERSONAS -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 06</span>
+          <span class="phase-name">Personas Comportamentais — 4 perfis baseados em evidências</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">Diferente de personas demográficas, esses perfis sintetizam <strong style="color:var(--t1)">padrões de motivação, expectativa e preocupação</strong> cruzando qualitativa e quantitativa. Cada perfil tem implicações diretas de design.</p>
+
+          <div class="case-img-wrap">
+            <img loading="lazy" src="./assets/images/pjus/[INTERNO] Jornada As Is - personas.jpg" alt="4 perfis comportamentais identificados na pesquisa PJUS">
+            <div class="img-caption">4 perfis comportamentais — O Aflito Financeiro · Com Problemas de Saúde · O Desconfiado · O Advogado</div>
+          </div>
+
+          <div class="insight">
+            <div class="insight-lbl">Persona estratégica — O Advogado</div>
+            <p class="insight-text">O advogado é o <strong>influenciador técnico decisivo</strong> em muitos casos — é quem efetivamente decide se o cliente fecha ou não. Tratar o advogado como canal e parceiro (não como obstáculo) é uma oportunidade competitiva estrutural que a PJUS ainda não explorava sistematicamente.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 07. OPORTUNIDADES -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 07</span>
+          <span class="phase-name">Oportunidades — Mapa + Priorização por Esforço × Valor</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">A partir do diagnóstico, identificamos dois problemas estruturais centrais e os desdobramos em 4 frentes. A priorização foi feita <strong style="color:var(--t1)">com o time de negociadores</strong> — quem opera o dia a dia.</p>
+
+          <div class="case-img-wrap">
+            <img loading="lazy" src="./assets/images/pjus/To Be _ Oportunidades - Mapa de Oportunidades.jpg" alt="Mapa de oportunidades em 4 frentes estruturais">
+            <div class="img-caption">Mapa de oportunidades — 4 frentes estruturais derivadas do diagnóstico de pesquisa e workshop</div>
+          </div>
+
+          <div class="frentes-grid" style="margin-top:1.25rem">
+            <div class="frente">
+              <div class="frente-num">Frente 01</div>
+              <div class="frente-name">Comunicação com o cliente</div>
+              <div class="frente-desc">Clareza das interações e redução da ansiedade gerada pela falta de visibilidade durante a análise</div>
+            </div>
+            <div class="frente">
+              <div class="frente-num">Frente 02</div>
+              <div class="frente-name">Proposta competitiva</div>
+              <div class="frente-desc">Como o valor é apresentado, explicado e comparado — reduzindo a percepção de injustiça no deságio</div>
+            </div>
+            <div class="frente">
+              <div class="frente-num">Frente 03</div>
+              <div class="frente-name">Processos internos</div>
+              <div class="frente-desc">Redução de gargalos operacionais e melhora do fluxo de informação entre áreas e times</div>
+            </div>
+            <div class="frente">
+              <div class="frente-num">Frente 04</div>
+              <div class="frente-name">Parcerias e canais</div>
+              <div class="frente-desc">Estratégia de aquisição via parceiros relevantes — incluindo advogados como canal estruturado</div>
+            </div>
+          </div>
+
+          <div class="case-img-wrap" style="margin-top:1.5rem">
+            <img loading="lazy" src="./assets/images/pjus/To Be _ Oportunidades - matrizes de esforço x valor.jpg" alt="Matrizes de esforço × valor — priorização com time de negociadores">
+            <div class="img-caption">Matrizes de esforço × valor — priorização das iniciativas com quem opera o dia a dia, por frente</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 08. JORNADA TO BE -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 08</span>
+          <span class="phase-name">Jornada To Be — experiência redesenhada por 4 princípios</span>
+        </div>
+        <div class="phase-body">
+          <p style="font-size:.9rem;color:var(--t2);line-height:1.75;margin-bottom:1.25rem">A jornada To Be foi construída sobre <strong style="color:var(--t1)">4 princípios estruturais</strong> derivados diretamente das evidências da pesquisa — não de intuição de design, mas de padrões confirmados em 50+ respondentes e 6 entrevistas.</p>
+
+          <div class="phase-grid" style="margin-bottom:1.25rem">
+            <div class="phase-item" style="border-left:3px solid var(--green)">
+              <span class="pi-type">Princípio 1</span>
+              <span class="pi-desc">Transparência ao longo de toda a jornada — status da análise e lógica de cálculo da proposta</span>
+            </div>
+            <div class="phase-item" style="border-left:3px solid var(--green)">
+              <span class="pi-type">Princípio 2</span>
+              <span class="pi-desc">Comunicação estruturada e contínua — acompanhamento proativo, não reativo</span>
+            </div>
+            <div class="phase-item" style="border-left:3px solid var(--green)">
+              <span class="pi-type">Princípio 3</span>
+              <span class="pi-desc">Integração entre áreas — processos estruturados com responsabilidades claras entre etapas</span>
+            </div>
+            <div class="phase-item" style="border-left:3px solid var(--green)">
+              <span class="pi-type">Princípio 4</span>
+              <span class="pi-desc">Dados e tecnologia — Salesforce + Opera + IA como espinha dorsal da operação</span>
+            </div>
+          </div>
+
+          <div class="case-img-wrap">
+            <img loading="lazy" src="./assets/images/pjus/To Be _ Oportunidades - JORNADA TO BE.jpg" alt="Jornada To Be — experiência redesenhada por etapa operacional">
+            <div class="img-caption">Jornada To Be — experiência redesenhada com melhorias mapeadas por etapa da operação</div>
+          </div>
+
+          <div class="case-img-wrap" style="margin-top:1.25rem">
+            <img loading="lazy" src="./assets/images/pjus/To Be _ Oportunidades - JORNADA TO BE CLIENTE.jpg" alt="Jornada To Be — perspectiva do cliente final">
+            <div class="img-caption">Jornada To Be — perspectiva do cliente · curva emocional estabilizada com comunicação contínua ao longo de toda a jornada</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 09. ROADMAP -->
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">Etapa 09</span>
+          <span class="phase-name">Roadmap Estratégico — Q0 a Q4 + Plano de 90 dias</span>
+        </div>
+        <div class="phase-body">
+          <div class="case-img-wrap">
+            <img loading="lazy" src="./assets/images/pjus/To Be _ Oportunidades - Roadmap.jpg" alt="Roadmap estratégico Q0–Q4 — da base à experiência ideal">
+            <div class="img-caption">Roadmap estratégico Q0–Q4 — lógica de evolução da base operacional à experiência ideal</div>
+          </div>
+
+          <div class="rmap" style="margin-top:1.25rem">
+            <div class="rmap-row">
+              <div class="rmap-q">Q0</div>
+              <div class="rmap-content">
+                <div class="rmap-theme">Garantir a base</div>
+                <div class="rmap-items">Governança (política de preços e SLAs) · IA para leitura de processo e triagem · Time comercial focado · Avaliação antifraude</div>
+              </div>
+            </div>
+            <div class="rmap-row">
+              <div class="rmap-q">Q1</div>
+              <div class="rmap-content">
+                <div class="rmap-theme">Comunicação de maior impacto</div>
+                <div class="rmap-items">Salesforce · Clareza de próximos passos · Envio de proposta estruturado · Comunicação trilho de assinatura · Contato de encerramento</div>
+              </div>
+            </div>
+            <div class="rmap-row">
+              <div class="rmap-q">Q2</div>
+              <div class="rmap-content">
+                <div class="rmap-theme">Continuidade da implementação de IA</div>
+                <div class="rmap-items">Motor de Qualificação + Precificação assistiva · API Opera-Salesforce · Checklist de Pré-venda · SLAs operacionais</div>
+              </div>
+            </div>
+            <div class="rmap-row">
+              <div class="rmap-q">Q3</div>
+              <div class="rmap-content">
+                <div class="rmap-theme">Iniciativas complementares</div>
+                <div class="rmap-items">Base de Conhecimento · Definition of Ready para Operação · Alocação por prioridade e perfil · Checklist humano de documentos</div>
+              </div>
+            </div>
+            <div class="rmap-row">
+              <div class="rmap-q">Q4</div>
+              <div class="rmap-content">
+                <div class="rmap-theme">Ajuste fino na experiência ideal</div>
+                <div class="rmap-items">Comunicação sobre pagamento · Agendamento proativo em cartório · Programa de indicação · Flexibilização de margem · KPIs de satisfação</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /phases -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ RESULTADO ═══════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Resultado</div>
+
+    <div class="anim" style="max-width:700px;margin-bottom:2rem">
+      <p style="font-size:.9375rem;color:var(--t2);line-height:1.8">Este projeto é uma <strong style="color:var(--t1);font-weight:500">fase de Discovery</strong>. O resultado primário não são métricas de produção (que virão no rollout) — são direcionadores estratégicos validados que substituíram opiniões internas por evidências compartilhadas.</p>
+    </div>
+
+    <div class="results-grid anim">
+      <div class="result-card">
+        <div class="result-ico">🎯</div>
+        <div class="result-title">Alinhamento de áreas que não conversavam</div>
+        <div class="result-desc">Pela primeira vez, Marketing, Comercial, Operação e Jurídico tiveram uma visão compartilhada do funil. Workshop com 40+ pessoas e apresentação executiva alinharam C-level e operação em torno de uma narrativa única.</div>
+      </div>
+      <div class="result-card">
+        <div class="result-ico">🔄</div>
+        <div class="result-title">Mudança de framing do problema</div>
+        <div class="result-desc">A discussão interna era "como aceleramos o SLA?". Depois do projeto: "como tornamos o SLA previsível e comunicado?" — abrindo caminho para soluções de visibilidade mais rápidas e baratas de implementar.</div>
+      </div>
+      <div class="result-card">
+        <div class="result-ico">📋</div>
+        <div class="result-title">Continuidade contratada</div>
+        <div class="result-desc">Com base no roadmap e no plano de 90 dias, a PJUS contratou a BRQ para a fase de implementação — com time dedicado de design, arquitetura e tecnologia.</div>
+      </div>
+    </div>
+
+    <div class="case-img-wrap anim" style="margin-top:1.5rem">
+      <img loading="lazy" src="./assets/images/pjus/Fase 2 _ Jornada To Be e Roadmap - GUIA EXECUTIVO Como Utilizar a Jornada To Be – PJUS.jpg" alt="Guia executivo — como a PJUS utiliza a Jornada To Be na operação">
+      <div class="img-caption">Guia executivo de uso — como a liderança da PJUS utiliza a Jornada To Be como ferramenta de alinhamento e decisão</div>
+    </div>
+
+    <div class="anim" style="margin-top:2rem">
+      <div style="font-family:var(--fd);font-size:1.125rem;color:var(--t1);letter-spacing:-.015em;margin-bottom:.875rem">Impactos esperados após a implementação</div>
+      <table class="data-table">
+        <thead><tr><th>Frente</th><th>Antes</th><th>Depois (esperado)</th></tr></thead>
+        <tbody>
+          <tr><td>Pré-venda</td><td class="val-amber">Triagem modesta, leads pouco qualificados</td><td class="val-green">Motor de qualificação + chatbot reduzem fricção</td></tr>
+          <tr><td>Comercial</td><td class="val-amber">Sobrecarga, propostas sem clareza</td><td class="val-green">Comunicação acertada + precificação com motor de regras</td></tr>
+          <tr><td>Operação</td><td class="val-red">20–25 dias de SLA, renegociações frequentes</td><td class="val-green">Análise jurídica prévia + IA reduz SLA</td></tr>
+          <tr><td>Experiência</td><td class="val-red">~50% desistem após receber proposta</td><td class="val-green">↑ fechamento de propostas + KPIs de satisfação monitorados</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════ REFLEXÃO ═══════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-label anim">Reflexão — o que esse projeto me ensinou</div>
+
+    <div class="reflection-list anim">
+      <div class="ref-item">
+        <div class="ref-num">1.</div>
+        <div class="ref-body">
+          <div class="ref-title">Pesquisa não serve para validar interface — serve para reduzir incerteza</div>
+          <div class="ref-text">A PJUS tinha hipóteses fortes sobre seus problemas. Algumas confirmamos. Outras refutamos. O valor não estava em "ter respostas" — estava em transformar opiniões internas em <strong>evidências compartilhadas</strong> que destravaram decisão estratégica.</div>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-num">2.</div>
+        <div class="ref-body">
+          <div class="ref-title">O eixo de design em mercados sensíveis é confiança, não conversão</div>
+          <div class="ref-text">Em transações patrimoniais — precatórios, imóveis, crédito — o cliente decide <em>confiar</em> antes de decidir <em>comprar</em>. Projetar para confiança significa projetar para <strong>transparência, previsibilidade e continuidade</strong>, não para velocidade.</div>
+        </div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-num">3.</div>
+        <div class="ref-body">
+          <div class="ref-title">Design estratégico só funciona quando os silos quebram</div>
+          <div class="ref-text">A maior entrega do projeto não foi um relatório bonito — foi um workshop com 40 pessoas de áreas que não conversavam, terminando com uma narrativa única. Quando Marketing, Comercial, Operação e Jurídico <strong>veem o mesmo cliente</strong>, o resto vira execução.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CLOSING ═══════ -->
+<div class="wrap">
+  <div class="closing anim">
+    <div class="closing-h">Thanks for reading</div>
+    <p class="closing-sub">Quer conversar sobre pesquisa, service design ou como transformar dados em decisão estratégica?</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="mailto:simonjvieira@gmail.com" class="btn btn-r">Falar comigo →</a>
+      <a href="./index.html#cases" class="btn btn-g">Ver outros cases</a>
+    </div>
+  </div>
+  <div class="case-nav-row">
+    <a href="./case-visa.html">← Case anterior</a>
+    <a href="./index.html#cases">Ver todos os cases →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">Simon Benlulu · <a href="./index.html" style="color:inherit">Portfolio</a></div>
+  <div class="fr">
+    <a href="https://www.linkedin.com/in/simonbenlulu/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="mailto:simonjvieira@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>40));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.anim').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
